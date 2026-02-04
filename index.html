@@ -119,11 +119,25 @@
         .btn-primary:active {
             transform: translateY(0);
         }
-        
         /* Dividers */
         .divider {
             height: 1px;
             background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+        }
+        
+        /* Pulse animation for scroll indicator */
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 0.4;
+                transform: translateY(0);
+            }
+            50% {
+                opacity: 0.8;
+                transform: translateY(4px);
+            }
+        }
+        .animate-pulse-slow {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
         }
     </style>
 </head>
@@ -142,20 +156,15 @@
     <div class="min-h-screen pb-24">
         
         <!-- Hero Header -->
-        <header class="relative overflow-hidden min-h-screen flex items-center" id="overview">
+        <header class="relative overflow-hidden min-h-[80vh] flex items-center" id="overview">
             <!-- Gradient Background -->
             <div class="absolute inset-0 hero-gradient"></div>
             
             <!-- Content -->
-            <div class="relative w-full px-6 py-20 max-w-2xl mx-auto">
-                
-                <!-- Top Label -->
-                <div class="text-xs font-medium tracking-widest uppercase text-white/60 mb-6 text-center">
-                    4 Days / 4 Nights
-                </div>
+            <div class="relative w-full px-6 py-16 max-w-2xl mx-auto">
                 
                 <!-- Main Title -->
-                <div class="text-center mb-12">
+                <div class="text-center mb-8">
                     <h1 class="text-6xl md:text-7xl font-bold tracking-tight text-white mb-2">
                         Lisbon
                     </h1>
@@ -168,55 +177,64 @@
                 </div>
                 
                 <!-- Compact Info Cards -->
-                <div class="grid grid-cols-2 gap-3 mb-10">
+                <div class="grid grid-cols-2 gap-3 mb-8">
                     <!-- Weather -->
                     <div class="glass rounded-xl p-4">
                         <div class="flex items-center justify-center gap-2 mb-2">
                             <span class="text-2xl">☀️</span>
-                            <span class="text-2xl font-light text-white">26°C</span>
+                            <div class="text-center">
+                                <div class="text-2xl font-light text-white">24-28°C</div>
+                                <div class="text-xs text-white/30 mt-0.5">High / Low</div>
+                            </div>
                         </div>
                         <div class="text-xs text-white/40 text-center">Sunny & Warm</div>
+                        <div class="text-[10px] text-white/25 text-center mt-1 italic">Est. June average</div>
                     </div>
                     
                     <!-- Countdown -->
                     <div class="glass rounded-xl p-4">
                         <div class="text-center">
-                            <div class="text-2xl font-light text-white mb-1" id="days">--</div>
+                            <div class="text-2xl font-light text-[#E07A5F] mb-1" id="days">--</div>
                             <div class="text-xs text-white/40">Days to Go</div>
                         </div>
                     </div>
                 </div>
                 
                 <!-- Add to Calendar Button -->
-                <button id="addToCalendar" class="w-full btn-primary py-4 px-6 rounded-xl text-sm font-medium tracking-wide text-white">
+                <button id="addToCalendar" class="w-full btn-primary py-4 px-6 rounded-xl text-sm font-medium tracking-wide text-white mb-4">
                     Add to Calendar
                 </button>
+                
+                <!-- Pull to Refresh Hint -->
+                <div class="text-center text-xs text-white/25 italic">
+                    Pull down to refresh details
+                </div>
                 
             </div>
             
             <!-- Scroll Indicator -->
-            <div class="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" opacity="0.4">
+            <div class="absolute bottom-6 left-1/2 -translate-x-1/2 animate-pulse-slow">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" opacity="0.5">
                     <path d="M12 5v14M19 12l-7 7-7-7"/>
                 </svg>
             </div>
         </header>
 
         <!-- Trip Overview -->
-        <div class="px-6 max-w-4xl mx-auto -mt-12 mb-16 relative z-10">
-            <div class="glass rounded-2xl p-8">
-                <div class="grid grid-cols-2 md:grid-cols-3 gap-6 text-center">
+        <div class="px-6 max-w-4xl mx-auto -mt-20 mb-16 relative z-10">
+            <div class="glass rounded-2xl p-6 shadow-2xl">
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-4 text-center">
                     <div>
-                        <div class="text-3xl font-light text-white mb-1">4</div>
+                        <div class="text-3xl font-light text-[#E07A5F] mb-1">4</div>
                         <div class="text-xs tracking-wider uppercase text-white/40">Nights</div>
                     </div>
                     <div>
-                        <div class="text-3xl font-light text-white mb-1">6-8</div>
+                        <div class="text-3xl font-light text-[#E07A5F] mb-1">6-8</div>
                         <div class="text-xs tracking-wider uppercase text-white/40">People</div>
                     </div>
-                    <div>
-                        <div class="text-3xl font-light text-white mb-1">£650</div>
-                        <div class="text-xs tracking-wider uppercase text-white/40">Per Person</div>
+                    <div class="col-span-2 md:col-span-1">
+                        <div class="text-3xl font-light text-[#E07A5F] mb-1">£650</div>
+                        <div class="text-xs tracking-wider uppercase text-white/40">Per Person (Est)</div>
                     </div>
                 </div>
             </div>
@@ -230,7 +248,7 @@
                 <div class="p-8">
                     <div class="flex items-center justify-between mb-6">
                         <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center text-2xl">
+                            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-[#E07A5F] to-[#D4956D] flex items-center justify-center text-2xl shadow-lg">
                                 ✈️
                             </div>
                             <div>
@@ -242,7 +260,7 @@
                                 </p>
                             </div>
                         </div>
-                        <div class="expand-icon text-white/40">
+                        <div class="expand-icon text-[#E07A5F]">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
                         </div>
                     </div>
@@ -326,7 +344,7 @@
                 <div class="p-8">
                     <div class="flex items-center justify-between mb-6">
                         <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center text-2xl">
+                            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-[#E07A5F] to-[#D4956D] flex items-center justify-center text-2xl shadow-lg">
                                 🏠
                             </div>
                             <div>
@@ -338,7 +356,7 @@
                                 </p>
                             </div>
                         </div>
-                        <div class="expand-icon text-white/40">
+                        <div class="expand-icon text-[#E07A5F]">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
                         </div>
                     </div>
@@ -426,7 +444,7 @@
                 <div class="p-8">
                     <div class="flex items-center justify-between mb-6">
                         <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center text-2xl">
+                            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-[#E07A5F] to-[#D4956D] flex items-center justify-center text-2xl shadow-lg">
                                 💷
                             </div>
                             <div>
@@ -438,7 +456,7 @@
                                 </p>
                             </div>
                         </div>
-                        <div class="expand-icon text-white/40">
+                        <div class="expand-icon text-[#E07A5F]">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
                         </div>
                     </div>
