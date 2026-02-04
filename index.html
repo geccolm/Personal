@@ -3,778 +3,663 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Summer 2026</title>
+    <title>Lisbon 2026 | 11th - 15th June</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --bg-primary: #000000;
-            --bg-secondary: #0D0D0D;
-            --bg-card: #1C1C1E;
-            --text-primary: #FFFFFF;
-            --text-secondary: #8E8E93;
-            --text-tertiary: #636366;
-            --accent: #FF6B47;
-            --accent-dark: #E85A36;
-            --border: rgba(255, 255, 255, 0.08);
-            --border-light: rgba(255, 255, 255, 0.12);
-        }
-
         * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Work Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            line-height: 1.6;
-            overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
         }
-
-        .serif {
-            font-family: 'Cormorant Garamond', Georgia, serif;
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #000000;
+            color: #ffffff;
+            overflow-x: hidden;
         }
-
-        html {
-            scroll-behavior: smooth;
+        
+        /* Sleek Card Animations */
+        .card {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(255, 255, 255, 0.06);
         }
-
-        /* Hero Section */
-        .hero {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 6rem 2rem;
-            background: var(--bg-primary);
-            position: relative;
+        .card:hover {
+            border-color: rgba(255, 255, 255, 0.12);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+        .card:active {
+            transform: scale(0.98);
+        }
+        
+        /* Expand Animation */
+        .expand-icon {
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .expanded .expand-icon {
+            transform: rotate(180deg);
+        }
+        .detail-content {
+            max-height: 0;
             overflow: hidden;
+            transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: -30%;
-            right: -10%;
-            width: 60%;
-            height: 120%;
-            background: radial-gradient(circle, rgba(255,107,71,0.12) 0%, transparent 65%);
-            pointer-events: none;
-            animation: float 25s ease-in-out infinite;
+        .expanded .detail-content {
+            max-height: 4000px;
         }
-
-        @keyframes float {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            50% { transform: translate(-40px, -40px) scale(1.1); }
-        }
-
-        .hero-content {
-            max-width: 900px;
-            text-align: center;
-            z-index: 1;
-            opacity: 0;
-            animation: fadeInUp 1.2s cubic-bezier(0.4, 0, 0.2, 1) 0.2s forwards;
-        }
-
+        
+        /* Fade In */
         @keyframes fadeInUp {
             from {
                 opacity: 0;
-                transform: translateY(40px);
+                transform: translateY(30px);
             }
             to {
                 opacity: 1;
                 transform: translateY(0);
             }
         }
-
-        .hero-title {
-            font-size: clamp(3.5rem, 14vw, 8rem);
-            font-weight: 600;
-            letter-spacing: -0.04em;
-            background: linear-gradient(180deg, var(--text-primary) 0%, var(--text-secondary) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+        .animate-fade-in {
+            animation: fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
         }
-
-        .scroll-indicator {
-            position: absolute;
-            bottom: 3rem;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 20px;
-            height: 36px;
-            border: 2px solid var(--border-light);
-            border-radius: 16px;
-            opacity: 0.4;
-            cursor: pointer;
+        
+        /* Gradient Backgrounds */
+        .hero-gradient {
+            background: linear-gradient(135deg, #E07A5F 0%, #D4956D 50%, #3D5A80 100%);
+        }
+        
+        /* Glass Effect */
+        .glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Sticky Navigation */
+        .sticky-nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            transform: translateY(-100%);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .sticky-nav.visible {
+            transform: translateY(0);
+        }
+        .nav-item {
+            transition: all 0.2s ease;
+            color: rgba(255, 255, 255, 0.6);
+        }
+        .nav-item:hover {
+            color: rgba(255, 255, 255, 0.9);
+        }
+        .nav-item.active {
+            color: #E07A5F;
+        }
+        
+        /* Button Styles */
+        .btn-primary {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             transition: all 0.3s ease;
         }
-
-        .scroll-indicator:hover {
-            opacity: 0.8;
-            border-color: var(--accent);
-        }
-
-        .scroll-indicator::before {
-            content: '';
-            position: absolute;
-            top: 6px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 3px;
-            height: 6px;
-            background: var(--text-primary);
-            border-radius: 2px;
-            animation: scroll 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-        }
-
-        @keyframes scroll {
-            0%, 100% { transform: translate(-50%, 0); opacity: 0.6; }
-            50% { transform: translate(-50%, 10px); opacity: 0; }
-        }
-
-        /* Brief Section */
-        .brief-section {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 5rem 2rem;
-        }
-
-        .brief-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 24px;
-            padding: 3rem;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .brief-card.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .brief-title {
-            font-size: 0.8125rem;
-            text-transform: uppercase;
-            letter-spacing: 0.2em;
-            color: var(--accent);
-            font-weight: 600;
-            margin-bottom: 2.5rem;
-        }
-
-        .brief-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 2.5rem;
-        }
-
-        .brief-item {
-            transition: transform 0.3s ease;
-        }
-
-        .brief-item:hover {
-            transform: translateY(-3px);
-        }
-
-        .brief-label {
-            font-size: 0.6875rem;
-            text-transform: uppercase;
-            letter-spacing: 0.12em;
-            color: var(--text-secondary);
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-        }
-
-        .brief-value {
-            font-size: 1.0625rem;
-            color: var(--text-primary);
-            font-weight: 400;
-            line-height: 1.5;
-        }
-
-        /* Destinations Section */
-        .destinations-section {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 6rem 2rem;
-        }
-
-        .section-header {
-            text-align: center;
-            margin-bottom: 4rem;
-        }
-
-        .section-title {
-            font-size: clamp(2.5rem, 6vw, 4.5rem);
-            font-weight: 600;
-            margin-bottom: 1rem;
-            letter-spacing: -0.03em;
-        }
-
-        .section-description {
-            font-size: 1.0625rem;
-            color: var(--text-secondary);
-            font-weight: 400;
-        }
-
-        .destinations-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 3rem;
-        }
-
-        @media (max-width: 768px) {
-            .destinations-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* Destination Card */
-        .destination-card {
-            background: var(--bg-card);
-            border-radius: 20px;
-            overflow: hidden;
-            border: 1px solid var(--border);
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            opacity: 0;
-            transform: translateY(40px);
-            cursor: pointer;
-            position: relative;
-        }
-
-        .destination-card.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .destination-card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-            border-color: var(--border-light);
-        }
-
-        .destination-card.expanded {
-            grid-column: 1 / -1;
-        }
-
-        .card-rank {
-            position: absolute;
-            top: 1.25rem;
-            left: 1.25rem;
-            width: 44px;
-            height: 44px;
-            background: rgba(0, 0, 0, 0.75);
-            backdrop-filter: blur(20px);
-            border: 1px solid var(--border-light);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
-            font-size: 1.125rem;
-            color: var(--accent);
-            z-index: 2;
-        }
-
-        .card-image-container {
-            position: relative;
-            height: 200px;
-            overflow: hidden;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        }
-
-        .card-image-overlay {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.6) 100%);
-            z-index: 1;
-        }
-
-        .card-tag {
-            position: absolute;
-            bottom: 1.25rem;
-            right: 1.25rem;
-            background: rgba(0, 0, 0, 0.75);
-            backdrop-filter: blur(20px);
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-size: 0.8125rem;
-            font-weight: 500;
-            color: var(--text-primary);
-            border: 1px solid var(--border);
-            z-index: 2;
-        }
-
-        .card-content {
-            padding: 1.75rem;
-        }
-
-        .card-header {
-            margin-bottom: 1.25rem;
-        }
-
-        .card-location {
-            font-size: 0.8125rem;
-            text-transform: uppercase;
-            letter-spacing: 0.12em;
-            color: var(--text-secondary);
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-        }
-
-        .card-title {
-            font-size: 1.875rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            letter-spacing: -0.02em;
-        }
-
-        .card-tagline {
-            font-size: 0.9375rem;
-            color: var(--text-secondary);
-            font-weight: 400;
-        }
-
-        .card-budget {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.5rem 1rem;
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            font-size: 0.875rem;
-            font-weight: 500;
-            color: var(--accent);
-            margin-bottom: 1rem;
-        }
-
-        .card-vibe {
-            font-size: 0.9375rem;
-            color: var(--text-secondary);
-            line-height: 1.7;
-            margin-bottom: 1.25rem;
-        }
-
-        .card-details {
-            display: grid;
-            gap: 1rem;
-            padding: 1.5rem 0;
-            border-top: 1px solid var(--border);
-            max-height: 0;
-            overflow: hidden;
-            opacity: 0;
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .destination-card.expanded .card-details {
-            max-height: 800px;
-            opacity: 1;
-        }
-
-        .detail-row {
-            display: flex;
-            align-items: flex-start;
-            gap: 1rem;
-        }
-
-        .detail-icon {
-            width: 38px;
-            height: 38px;
-            border-radius: 10px;
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            font-size: 1.125rem;
-        }
-
-        .detail-content {
-            flex: 1;
-        }
-
-        .detail-label {
-            font-size: 0.6875rem;
-            text-transform: uppercase;
-            letter-spacing: 0.12em;
-            color: var(--text-tertiary);
-            margin-bottom: 0.25rem;
-            font-weight: 600;
-        }
-
-        .detail-text {
-            font-size: 0.9375rem;
-            color: var(--text-primary);
-            line-height: 1.6;
-        }
-
-        .expand-button {
-            margin-top: 1.25rem;
-            width: 100%;
-            padding: 0.875rem;
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            font-size: 0.875rem;
-            font-weight: 500;
-            color: var(--text-primary);
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            font-family: inherit;
-        }
-
-        .expand-button:hover {
-            background: var(--accent);
-            border-color: var(--accent);
+        .btn-primary:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
             transform: translateY(-2px);
         }
-
-        .destination-card.expanded .expand-button {
-            background: var(--bg-primary);
-            border-color: var(--border-light);
-        }
-
-        /* Recommendation Section */
-        .recommendation {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 4rem 2rem;
-            text-align: center;
-        }
-
-        .recommendation-card {
-            background: linear-gradient(135deg, var(--accent-dark) 0%, var(--accent) 100%);
-            border-radius: 24px;
-            padding: 3rem;
-            color: white;
-            box-shadow: 0 20px 60px rgba(255, 107, 71, 0.3);
-        }
-
-        .recommendation-label {
-            font-size: 0.8125rem;
-            text-transform: uppercase;
-            letter-spacing: 0.2em;
-            opacity: 0.9;
-            margin-bottom: 1rem;
-            font-weight: 600;
-        }
-
-        .recommendation-title {
-            font-size: 2.75rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-            letter-spacing: -0.03em;
-        }
-
-        .recommendation-text {
-            font-size: 1.0625rem;
-            line-height: 1.7;
-            opacity: 0.95;
-            font-weight: 400;
-        }
-
-        /* Footer */
-        .footer {
-            text-align: center;
-            padding: 3rem 2rem;
-            color: var(--text-tertiary);
-            font-size: 0.8125rem;
-            font-weight: 400;
-        }
-
-        /* Scroll animations */
-        .fade-in-up {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .fade-in-up.visible {
-            opacity: 1;
+        .btn-primary:active {
             transform: translateY(0);
         }
-
-        /* Color variations for cards */
-        .destination-card:nth-child(1) .card-image-container {
-            background: linear-gradient(135deg, #E85A36 0%, #FF6B47 100%);
-        }
-
-        .destination-card:nth-child(2) .card-image-container {
-            background: linear-gradient(135deg, #2E5F8C 0%, #4A90E2 100%);
-        }
-
-        .destination-card:nth-child(3) .card-image-container {
-            background: linear-gradient(135deg, #D68910 0%, #F39C12 100%);
-        }
-
-        .destination-card:nth-child(4) .card-image-container {
-            background: linear-gradient(135deg, #8B4789 0%, #A569BD 100%);
+        
+        /* Dividers */
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
         }
     </style>
 </head>
 <body>
-
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="hero-content">
-            <h1 class="hero-title serif">Summer 2026</h1>
+    
+    <!-- Sticky Mobile Navigation -->
+    <nav class="sticky-nav" id="stickyNav">
+        <div class="flex overflow-x-auto px-6 py-4 gap-6">
+            <a href="#overview" class="nav-item flex-shrink-0 text-xs font-medium tracking-wide uppercase whitespace-nowrap">Overview</a>
+            <a href="#flights" class="nav-item flex-shrink-0 text-xs font-medium tracking-wide uppercase whitespace-nowrap">Flights</a>
+            <a href="#accommodation" class="nav-item flex-shrink-0 text-xs font-medium tracking-wide uppercase whitespace-nowrap">Stay</a>
+            <a href="#budget" class="nav-item flex-shrink-0 text-xs font-medium tracking-wide uppercase whitespace-nowrap">Budget</a>
         </div>
-        <div class="scroll-indicator" onclick="document.querySelector('.brief-section').scrollIntoView({behavior: 'smooth'})"></div>
-    </section>
+    </nav>
 
-    <!-- Brief Section -->
-    <section class="brief-section">
-        <div class="brief-card">
-            <div class="brief-title">The Brief</div>
-            <div class="brief-grid">
-                <div class="brief-item">
-                    <div class="brief-label">Duration</div>
-                    <div class="brief-value">4 Nights</div>
+    <div class="min-h-screen pb-24">
+        
+        <!-- Hero Header -->
+        <header class="relative overflow-hidden min-h-screen flex items-center" id="overview">
+            <!-- Gradient Background -->
+            <div class="absolute inset-0 hero-gradient"></div>
+            
+            <!-- Content -->
+            <div class="relative w-full px-6 py-20 max-w-2xl mx-auto">
+                
+                <!-- Top Label -->
+                <div class="text-xs font-medium tracking-widest uppercase text-white/60 mb-6 text-center">
+                    4 Days / 4 Nights
                 </div>
-                <div class="brief-item">
-                    <div class="brief-label">Budget</div>
-                    <div class="brief-value">£600-800pp total</div>
+                
+                <!-- Main Title -->
+                <div class="text-center mb-12">
+                    <h1 class="text-6xl md:text-7xl font-bold tracking-tight text-white mb-2">
+                        Lisbon
+                    </h1>
+                    <div class="text-xl font-light text-white/60">
+                        Portugal
+                    </div>
+                    <div class="text-2xl font-light text-white/80 mt-4">
+                        11th - 15th June 2026
+                    </div>
                 </div>
-                <div class="brief-item">
-                    <div class="brief-label">Flights</div>
-                    <div class="brief-value">London or Bristol, non-stop only</div>
+                
+                <!-- Compact Info Cards -->
+                <div class="grid grid-cols-2 gap-3 mb-10">
+                    <!-- Weather -->
+                    <div class="glass rounded-xl p-4">
+                        <div class="flex items-center justify-center gap-2 mb-2">
+                            <span class="text-2xl">☀️</span>
+                            <span class="text-2xl font-light text-white">26°C</span>
+                        </div>
+                        <div class="text-xs text-white/40 text-center">Sunny & Warm</div>
+                    </div>
+                    
+                    <!-- Countdown -->
+                    <div class="glass rounded-xl p-4">
+                        <div class="text-center">
+                            <div class="text-2xl font-light text-white mb-1" id="days">--</div>
+                            <div class="text-xs text-white/40">Days to Go</div>
+                        </div>
+                    </div>
                 </div>
-                <div class="brief-item">
-                    <div class="brief-label">Group</div>
-                    <div class="brief-value">6-8+ people</div>
-                </div>
-                <div class="brief-item">
-                    <div class="brief-label">Accommodation</div>
-                    <div class="brief-value">Villa with pool</div>
-                </div>
-                <div class="brief-item">
-                    <div class="brief-label">Weather</div>
-                    <div class="brief-value">Hot & sunny, guaranteed warmth</div>
-                </div>
-                <div class="brief-item">
-                    <div class="brief-label">Daytime</div>
-                    <div class="brief-value">Beach bars, day drinking</div>
-                </div>
-                <div class="brief-item">
-                    <div class="brief-label">Evenings</div>
-                    <div class="brief-value">Bars till 1-3am, occasional clubs</div>
-                </div>
-                <div class="brief-item" style="grid-column: 1 / -1;">
-                    <div class="brief-label">Avoid</div>
-                    <div class="brief-value">No neon strips, no freshers week vibes, no 18-year-olds</div>
+                
+                <!-- Add to Calendar Button -->
+                <button id="addToCalendar" class="w-full btn-primary py-4 px-6 rounded-xl text-sm font-medium tracking-wide text-white">
+                    Add to Calendar
+                </button>
+                
+            </div>
+            
+            <!-- Scroll Indicator -->
+            <div class="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" opacity="0.4">
+                    <path d="M12 5v14M19 12l-7 7-7-7"/>
+                </svg>
+            </div>
+        </header>
+
+        <!-- Trip Overview -->
+        <div class="px-6 max-w-4xl mx-auto -mt-12 mb-16 relative z-10">
+            <div class="glass rounded-2xl p-8">
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-6 text-center">
+                    <div>
+                        <div class="text-3xl font-light text-white mb-1">4</div>
+                        <div class="text-xs tracking-wider uppercase text-white/40">Nights</div>
+                    </div>
+                    <div>
+                        <div class="text-3xl font-light text-white mb-1">6-8</div>
+                        <div class="text-xs tracking-wider uppercase text-white/40">People</div>
+                    </div>
+                    <div>
+                        <div class="text-3xl font-light text-white mb-1">£650</div>
+                        <div class="text-xs tracking-wider uppercase text-white/40">Per Person</div>
+                    </div>
                 </div>
             </div>
         </div>
-    </section>
 
-    <!-- Destinations Section -->
-    <section class="destinations-section">
-        <div class="section-header fade-in-up">
-            <h2 class="section-title serif">Your Options</h2>
-            <p class="section-description">Tap any destination to see full details</p>
+        <!-- Sections Container -->
+        <div class="px-6 max-w-4xl mx-auto space-y-6 mb-20">
+            
+            <!-- Flights Section -->
+            <div class="card bg-white/5 rounded-2xl overflow-hidden cursor-pointer animate-fade-in" id="flights" style="animation-delay: 0.1s;">
+                <div class="p-8">
+                    <div class="flex items-center justify-between mb-6">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center text-2xl">
+                                ✈️
+                            </div>
+                            <div>
+                                <h2 class="text-2xl font-semibold text-white">
+                                    Flights
+                                </h2>
+                                <p class="text-sm text-white/40 mt-1">
+                                    Travel Details
+                                </p>
+                            </div>
+                        </div>
+                        <div class="expand-icon text-white/40">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+                        </div>
+                    </div>
+
+                    <div class="glass rounded-xl p-4 mb-6">
+                        <p class="text-sm text-white/60">
+                            Direct flights from London or Bristol • 2h15 flight time
+                        </p>
+                    </div>
+
+                    <!-- Expanded Content -->
+                    <div class="detail-content">
+                        <div class="pt-6">
+                            <div class="divider mb-6"></div>
+                            
+                            <!-- TBD Notice -->
+                            <div class="bg-white/5 border border-white/10 rounded-xl p-6 mb-6">
+                                <div class="flex items-center gap-2 mb-3">
+                                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                        <circle cx="10" cy="10" r="8" stroke="#E07A5F" stroke-width="1.5"/>
+                                        <path d="M10 6v4M10 13h.01" stroke="#E07A5F" stroke-width="1.5" stroke-linecap="round"/>
+                                    </svg>
+                                    <p class="text-xs font-medium tracking-wider uppercase text-[#E07A5F]">
+                                        To Be Confirmed
+                                    </p>
+                                </div>
+                                <p class="text-sm text-white/60 leading-relaxed">
+                                    Flight details pending booking. Once confirmed, this section will include: airline, flight numbers, departure/arrival times, terminal info, and baggage allowance.
+                                </p>
+                            </div>
+
+                            <!-- Requirements -->
+                            <div class="mb-6">
+                                <p class="text-xs font-medium tracking-wider uppercase text-white/40 mb-4">Requirements</p>
+                                <div class="space-y-3">
+                                    <div class="flex items-start gap-3">
+                                        <div class="w-1 h-1 rounded-full bg-[#E07A5F] mt-2"></div>
+                                        <span class="text-sm text-white/60">Direct/non-stop flights only</span>
+                                    </div>
+                                    <div class="flex items-start gap-3">
+                                        <div class="w-1 h-1 rounded-full bg-[#E07A5F] mt-2"></div>
+                                        <span class="text-sm text-white/60">Maximum 4 hour flight time</span>
+                                    </div>
+                                    <div class="flex items-start gap-3">
+                                        <div class="w-1 h-1 rounded-full bg-[#E07A5F] mt-2"></div>
+                                        <span class="text-sm text-white/60">Departing from London or Bristol</span>
+                                    </div>
+                                    <div class="flex items-start gap-3">
+                                        <div class="w-1 h-1 rounded-full bg-[#E07A5F] mt-2"></div>
+                                        <span class="text-sm text-white/60">Budget: ~£170pp return</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Placeholder Details -->
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="opacity-30">
+                                    <p class="text-xs tracking-wider uppercase text-white/40 mb-2">Outbound</p>
+                                    <p class="text-sm text-white">TBD</p>
+                                </div>
+                                <div class="opacity-30">
+                                    <p class="text-xs tracking-wider uppercase text-white/40 mb-2">Return</p>
+                                    <p class="text-sm text-white">TBD</p>
+                                </div>
+                                <div class="opacity-30">
+                                    <p class="text-xs tracking-wider uppercase text-white/40 mb-2">Airline</p>
+                                    <p class="text-sm text-white">TBD</p>
+                                </div>
+                                <div class="opacity-30">
+                                    <p class="text-xs tracking-wider uppercase text-white/40 mb-2">Baggage</p>
+                                    <p class="text-sm text-white">TBD</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Accommodation Section -->
+            <div class="card bg-white/5 rounded-2xl overflow-hidden cursor-pointer animate-fade-in" id="accommodation" style="animation-delay: 0.2s;">
+                <div class="p-8">
+                    <div class="flex items-center justify-between mb-6">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center text-2xl">
+                                🏠
+                            </div>
+                            <div>
+                                <h2 class="text-2xl font-semibold text-white">
+                                    Accommodation
+                                </h2>
+                                <p class="text-sm text-white/40 mt-1">
+                                    Where We're Staying
+                                </p>
+                            </div>
+                        </div>
+                        <div class="expand-icon text-white/40">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+                        </div>
+                    </div>
+
+                    <div class="glass rounded-xl p-4 mb-6">
+                        <p class="text-sm text-white/60">
+                            Private villa with pool • Within 15 mins of nightlife
+                        </p>
+                    </div>
+
+                    <!-- Expanded Content -->
+                    <div class="detail-content">
+                        <div class="pt-6">
+                            <div class="divider mb-6"></div>
+                            
+                            <!-- TBD Notice -->
+                            <div class="bg-white/5 border border-white/10 rounded-xl p-6 mb-6">
+                                <div class="flex items-center gap-2 mb-3">
+                                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                        <circle cx="10" cy="10" r="8" stroke="#E07A5F" stroke-width="1.5"/>
+                                        <path d="M10 6v4M10 13h.01" stroke="#E07A5F" stroke-width="1.5" stroke-linecap="round"/>
+                                    </svg>
+                                    <p class="text-xs font-medium tracking-wider uppercase text-[#E07A5F]">
+                                        To Be Decided
+                                    </p>
+                                </div>
+                                <p class="text-sm text-white/60 leading-relaxed">
+                                    Accommodation details pending. Once booked, this section will include: property name, address, check-in time, check-out time, house rules, amenities list, and contact details.
+                                </p>
+                            </div>
+
+                            <!-- Requirements -->
+                            <div class="mb-6">
+                                <p class="text-xs font-medium tracking-wider uppercase text-white/40 mb-4">Requirements</p>
+                                <div class="space-y-3">
+                                    <div class="flex items-start gap-3">
+                                        <div class="w-1 h-1 rounded-full bg-[#E07A5F] mt-2"></div>
+                                        <span class="text-sm text-white/60">Private villa or high-end apartment</span>
+                                    </div>
+                                    <div class="flex items-start gap-3">
+                                        <div class="w-1 h-1 rounded-full bg-[#E07A5F] mt-2"></div>
+                                        <span class="text-sm text-white/60">Pool essential for recovery & pre-drinks</span>
+                                    </div>
+                                    <div class="flex items-start gap-3">
+                                        <div class="w-1 h-1 rounded-full bg-[#E07A5F] mt-2"></div>
+                                        <span class="text-sm text-white/60">6-8+ person capacity</span>
+                                    </div>
+                                    <div class="flex items-start gap-3">
+                                        <div class="w-1 h-1 rounded-full bg-[#E07A5F] mt-2"></div>
+                                        <span class="text-sm text-white/60">Within 15 mins of action (20 min taxi acceptable)</span>
+                                    </div>
+                                    <div class="flex items-start gap-3">
+                                        <div class="w-1 h-1 rounded-full bg-[#E07A5F] mt-2"></div>
+                                        <span class="text-sm text-white/60">Budget: £220-300pp for 4 nights</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Placeholder Details -->
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="opacity-30">
+                                    <p class="text-xs tracking-wider uppercase text-white/40 mb-2">Check-In</p>
+                                    <p class="text-sm text-white">TBD</p>
+                                </div>
+                                <div class="opacity-30">
+                                    <p class="text-xs tracking-wider uppercase text-white/40 mb-2">Check-Out</p>
+                                    <p class="text-sm text-white">TBD</p>
+                                </div>
+                                <div class="opacity-30">
+                                    <p class="text-xs tracking-wider uppercase text-white/40 mb-2">Address</p>
+                                    <p class="text-sm text-white">TBD</p>
+                                </div>
+                                <div class="opacity-30">
+                                    <p class="text-xs tracking-wider uppercase text-white/40 mb-2">Host Contact</p>
+                                    <p class="text-sm text-white">TBD</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Budget Breakdown -->
+            <div class="card bg-white/5 rounded-2xl overflow-hidden cursor-pointer animate-fade-in" id="budget" style="animation-delay: 0.3s;">
+                <div class="p-8">
+                    <div class="flex items-center justify-between mb-6">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center text-2xl">
+                                💷
+                            </div>
+                            <div>
+                                <h2 class="text-2xl font-semibold text-white">
+                                    Budget
+                                </h2>
+                                <p class="text-sm text-white/40 mt-1">
+                                    Cost Breakdown
+                                </p>
+                            </div>
+                        </div>
+                        <div class="expand-icon text-white/40">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+                        </div>
+                    </div>
+
+                    <!-- Budget Summary -->
+                    <div class="grid grid-cols-2 gap-4 mb-6">
+                        <div class="glass rounded-xl p-5 text-center">
+                            <p class="text-xs tracking-wider uppercase text-white/40 mb-2">Target</p>
+                            <p class="text-3xl font-light text-white">£600-800</p>
+                        </div>
+                        <div class="glass rounded-xl p-5 text-center">
+                            <p class="text-xs tracking-wider uppercase text-white/40 mb-2">Estimate</p>
+                            <p class="text-3xl font-light text-[#E07A5F]">£650-750</p>
+                        </div>
+                    </div>
+
+                    <!-- Expanded Content -->
+                    <div class="detail-content">
+                        <div class="pt-6">
+                            <div class="divider mb-6"></div>
+                            
+                            <!-- Fixed Costs -->
+                            <div class="mb-8">
+                                <p class="text-xs font-medium tracking-wider uppercase text-white/40 mb-4">
+                                    Fixed Costs
+                                </p>
+                                <div class="space-y-4">
+                                    <div class="flex justify-between items-center">
+                                        <div>
+                                            <p class="text-sm font-medium text-white">Flights</p>
+                                            <p class="text-xs text-white/40 mt-1">Return from London/Bristol</p>
+                                        </div>
+                                        <p class="text-2xl font-light text-white">£170</p>
+                                    </div>
+                                    <div class="divider"></div>
+                                    <div class="flex justify-between items-center">
+                                        <div>
+                                            <p class="text-sm font-medium text-white">Accommodation</p>
+                                            <p class="text-xs text-white/40 mt-1">4 nights in villa/apartment</p>
+                                        </div>
+                                        <p class="text-2xl font-light text-white">£220-300</p>
+                                    </div>
+                                    <div class="divider"></div>
+                                    <div class="flex justify-between items-center">
+                                        <div>
+                                            <p class="text-sm font-medium text-white">Transfers</p>
+                                            <p class="text-xs text-white/40 mt-1">Airport to accommodation</p>
+                                        </div>
+                                        <p class="text-2xl font-light text-white">£30-40</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Variable Costs -->
+                            <div>
+                                <p class="text-xs font-medium tracking-wider uppercase text-white/40 mb-4">
+                                    Variable Costs
+                                </p>
+                                <div class="space-y-4">
+                                    <div class="flex justify-between items-center">
+                                        <div>
+                                            <p class="text-sm font-medium text-white">Food & Dining</p>
+                                            <p class="text-xs text-white/40 mt-1">Breakfast, lunch, dinners</p>
+                                        </div>
+                                        <p class="text-2xl font-light text-white/60">£120-150</p>
+                                    </div>
+                                    <div class="divider"></div>
+                                    <div class="flex justify-between items-center">
+                                        <div>
+                                            <p class="text-sm font-medium text-white">Drinks & Nightlife</p>
+                                            <p class="text-xs text-white/40 mt-1">Cocktails, beers, clubs</p>
+                                        </div>
+                                        <p class="text-2xl font-light text-white/60">£100-150</p>
+                                    </div>
+                                    <div class="divider"></div>
+                                    <div class="flex justify-between items-center">
+                                        <div>
+                                            <p class="text-sm font-medium text-white">Local Transport</p>
+                                            <p class="text-xs text-white/40 mt-1">Taxis & Ubers</p>
+                                        </div>
+                                        <p class="text-2xl font-light text-white/60">£30-40</p>
+                                    </div>
+                                    <div class="divider"></div>
+                                    <div class="flex justify-between items-center">
+                                        <div>
+                                            <p class="text-sm font-medium text-white">Misc & Contingency</p>
+                                            <p class="text-xs text-white/40 mt-1">Snacks, emergencies</p>
+                                        </div>
+                                        <p class="text-2xl font-light text-white/60">£50</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
-
-        <div class="destinations-grid" id="destinations-grid"></div>
-    </section>
-
-    <!-- Recommendation Section -->
-    <section class="recommendation">
-        <div class="recommendation-card">
-            <div class="recommendation-label">Our Recommendation</div>
-            <h3 class="recommendation-title serif">Lagos</h3>
-            <p class="recommendation-text">Best all-rounder for villa + nightlife + budget. Hvar has the best nightlife if you don't mind 25-min taxis. Albufeira is easiest villa access with most clubs.</p>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <p>Summer 2026 • May — August</p>
-    </footer>
+    </div>
 
     <script>
-        const destinations = [
-            {
-                id: 1,
-                rank: "1",
-                name: "Lagos",
-                country: "Portugal",
-                tagline: "Portuguese Cool",
-                tag: "Best Value",
-                budget: "£450-550pp",
-                vibe: "Best all-rounder. Sophisticated beach town with proper nightlife, stunning cliffs, and easy villa access.",
-                flight: "2h15 direct to Faro + 1hr transfer",
-                stay: "Villa with pool (10-15 mins from town) - loads of options",
-                day: "Mix it all - Nau Beach Club (fancy), Meia Praia bars (casual), local tavernas",
-                night: "Old town bars till 1-2am, clubs like Inside Out, Nah Nah Bah. Lively not tacky."
-            },
-            {
-                id: 2,
-                rank: "2",
-                name: "Hvar Town",
-                country: "Croatia",
-                tagline: "Adriatic Glam",
-                tag: "Premium Pricing",
-                budget: "£550-700pp",
-                vibe: "Best nightlife of anywhere. Yacht week crowd, beach clubs, proper bars and clubs. Villa situation trickier.",
-                flight: "2h45 to Split + 1hr ferry",
-                stay: "Villa with pool (20-30 mins out) - taxis needed but worth it",
-                day: "Hula Hula (€16 cocktails), Carpe Diem Beach, Pakleni Islands",
-                night: "Best bar scene. Carpe Diem, Veneranda club, Pink Champagne. Goes till 2-5am."
-            },
-            {
-                id: 3,
-                rank: "3",
-                name: "Albufeira",
-                country: "Portugal",
-                tagline: "Party Central",
-                tag: "Very Affordable",
-                budget: "£420-520pp",
-                vibe: "Most nightlife + easiest villa combo. More party energy than Lagos, less sophisticated than Hvar.",
-                flight: "2h15 direct to Faro + 45min transfer",
-                stay: "Villa with pool (10 mins from The Strip) - tons of options",
-                day: "Beach clubs (Blanco, NoSoloÁgua), bars everywhere, great beaches",
-                night: "Massive bar scene on The Strip, proper clubs (Libertine, Kiss). 25-35 crowd."
-            },
-            {
-                id: 4,
-                rank: "4",
-                name: "Rhodes Town",
-                country: "Greece",
-                tagline: "Ancient Meets Modern",
-                tag: "Historic Charm",
-                budget: "£480-600pp",
-                vibe: "Medieval old town meets beach clubs. Great balance of culture and party, slightly more relaxed than top 3.",
-                flight: "4h direct to Rhodes (limited availability)",
-                stay: "Villa with pool (15-20 mins from town) - decent options",
-                day: "Beach bars at Elli Beach, Anthony Quinn Bay, local tavernas in old town",
-                night: "Bar Street in old town, Colorado Club, Remedy. Mix of locals and tourists."
+        // Countdown Timer (Days only)
+        function updateCountdown() {
+            const targetDate = new Date('2026-06-11T00:00:00').getTime();
+            const now = new Date().getTime();
+            const distance = targetDate - now;
+
+            if (distance < 0) {
+                document.getElementById('days').textContent = '0';
+                return;
             }
-        ];
 
-        const emojis = {
-            flight: "✈️",
-            stay: "🏠",
-            day: "☀️",
-            night: "🌙"
-        };
-
-        function createDestinationCard(destination, index) {
-            const card = document.createElement('div');
-            card.className = 'destination-card';
-            card.style.transitionDelay = `${index * 0.1}s`;
-            
-            card.innerHTML = `
-                <div class="card-rank">${destination.rank}</div>
-                <div class="card-image-container">
-                    <div class="card-image-overlay"></div>
-                    <div class="card-tag">${destination.tag}</div>
-                </div>
-                <div class="card-content">
-                    <div class="card-header">
-                        <div class="card-location">${destination.country}</div>
-                        <h3 class="card-title serif">${destination.name}</h3>
-                        <p class="card-tagline">${destination.tagline}</p>
-                    </div>
-                    <div class="card-budget">💰 ${destination.budget}</div>
-                    <p class="card-vibe">${destination.vibe}</p>
-                    <div class="card-details">
-                        <div class="detail-row">
-                            <div class="detail-icon">${emojis.flight}</div>
-                            <div class="detail-content">
-                                <div class="detail-label">Flight</div>
-                                <div class="detail-text">${destination.flight}</div>
-                            </div>
-                        </div>
-                        <div class="detail-row">
-                            <div class="detail-icon">${emojis.stay}</div>
-                            <div class="detail-content">
-                                <div class="detail-label">Stay</div>
-                                <div class="detail-text">${destination.stay}</div>
-                            </div>
-                        </div>
-                        <div class="detail-row">
-                            <div class="detail-icon">${emojis.day}</div>
-                            <div class="detail-content">
-                                <div class="detail-label">Day</div>
-                                <div class="detail-text">${destination.day}</div>
-                            </div>
-                        </div>
-                        <div class="detail-row">
-                            <div class="detail-icon">${emojis.night}</div>
-                            <div class="detail-content">
-                                <div class="detail-label">Night</div>
-                                <div class="detail-text">${destination.night}</div>
-                            </div>
-                        </div>
-                    </div>
-                    <button class="expand-button">View Details</button>
-                </div>
-            `;
-
-            const button = card.querySelector('.expand-button');
-            button.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const wasExpanded = card.classList.contains('expanded');
-                
-                // Close all cards
-                document.querySelectorAll('.destination-card').forEach(c => {
-                    c.classList.remove('expanded');
-                    c.querySelector('.expand-button').textContent = 'View Details';
-                });
-
-                // Toggle current card
-                if (!wasExpanded) {
-                    card.classList.add('expanded');
-                    button.textContent = 'Close';
-                    setTimeout(() => {
-                        card.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    }, 100);
-                }
-            });
-
-            return card;
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            document.getElementById('days').textContent = days;
         }
 
-        // Render destinations
-        const grid = document.getElementById('destinations-grid');
-        destinations.forEach((dest, index) => {
-            grid.appendChild(createDestinationCard(dest, index));
+        updateCountdown();
+        setInterval(updateCountdown, 60000); // Update every minute instead of every second
+
+        // Add to Calendar
+        document.getElementById('addToCalendar').addEventListener('click', function() {
+            const event = {
+                title: 'Lisbon Trip 2026',
+                description: 'Group holiday to Lisbon - 4 nights of sun, food, and good vibes',
+                start: '2026-06-11T12:00:00',
+                end: '2026-06-15T18:00:00',
+                location: 'Lisbon, Portugal'
+            };
+
+            const icsContent = `BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Lisbon Trip 2026//EN
+BEGIN:VEVENT
+UID:${Date.now()}@lisbon2026
+DTSTAMP:${formatICSDate(new Date())}
+DTSTART:${formatICSDate(new Date(event.start))}
+DTEND:${formatICSDate(new Date(event.end))}
+SUMMARY:${event.title}
+DESCRIPTION:${event.description}
+LOCATION:${event.location}
+END:VEVENT
+END:VCALENDAR`;
+
+            const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'lisbon-trip-2026.ics';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
         });
 
-        // Intersection Observer for scroll animations
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
+        function formatICSDate(date) {
+            return date.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+        }
 
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
+        // Expandable sections
+        document.querySelectorAll('.card').forEach(card => {
+            card.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A' || e.target.closest('a')) return;
+                
+                const wasExpanded = this.classList.contains('expanded');
+                
+                if (wasExpanded) {
+                    this.classList.remove('expanded');
+                } else {
+                    this.classList.add('expanded');
                 }
             });
-        }, observerOptions);
+        });
 
-        // Observe all animated elements
-        document.querySelectorAll('.destination-card, .brief-card, .fade-in-up').forEach(el => {
-            observer.observe(el);
+        // Sticky navigation
+        const stickyNav = document.getElementById('stickyNav');
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 600) {
+                stickyNav.classList.add('visible');
+            } else {
+                stickyNav.classList.remove('visible');
+            }
+        });
+
+        // Smooth scroll
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                const targetElement = document.getElementById(targetId);
+                
+                if (targetElement) {
+                    const offsetTop = targetElement.offsetTop - 80;
+                    window.scrollTo({
+                        top: offsetTop,
+                        behavior: 'smooth'
+                    });
+                }
+
+                document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Update active nav on scroll
+        const sections = document.querySelectorAll('[id]');
+        window.addEventListener('scroll', () => {
+            const scrollPos = window.pageYOffset + 100;
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.offsetHeight;
+                const sectionId = section.getAttribute('id');
+                
+                if (scrollPos >= sectionTop && scrollPos < sectionTop + sectionHeight) {
+                    document.querySelectorAll('.nav-item').forEach(item => {
+                        item.classList.remove('active');
+                        if (item.getAttribute('href') === `#${sectionId}`) {
+                            item.classList.add('active');
+                        }
+                    });
+                }
+            });
         });
     </script>
-
 </body>
 </html>
