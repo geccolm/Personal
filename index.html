@@ -13,25 +13,18 @@
             --bg-card: #141418;
             --bg-card-hover: #1A1A1F;
             --bg-surface: rgba(255, 255, 255, 0.04);
-            --bg-surface-hover: rgba(255, 255, 255, 0.07);
             --text-primary: #F2F0ED;
             --text-secondary: #9A978F;
             --text-tertiary: #5E5C56;
             --terracotta: #D4896E;
             --terracotta-light: #E0A48A;
             --terracotta-dim: rgba(212, 137, 110, 0.15);
-            --blue: #7EB8D4;
-            --blue-dim: rgba(126, 184, 212, 0.12);
-            --olive: #A3B07E;
-            --olive-dim: rgba(163, 176, 126, 0.12);
             --border: rgba(255, 255, 255, 0.06);
             --border-light: rgba(255, 255, 255, 0.1);
         }
 
         * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+            margin: 0; padding: 0; box-sizing: border-box;
             -webkit-tap-highlight-color: transparent;
         }
 
@@ -47,9 +40,7 @@
             -moz-osx-font-smoothing: grayscale;
         }
 
-        /* ═══════════════════════════════════════
-           HERO
-        ═══════════════════════════════════════ */
+        /* ═══ HERO ═══ */
         .hero {
             min-height: 100vh;
             min-height: 100dvh;
@@ -62,7 +53,6 @@
             padding: 2rem 1.5rem 3rem;
         }
 
-        /* Seamless animated gradient via canvas */
         .hero-gradient-canvas {
             position: absolute;
             inset: 0;
@@ -70,52 +60,68 @@
             height: 100%;
         }
 
-        /* Floating decorative elements */
+        /* Floating shapes — positioned via JS for scroll physics */
         .float-element {
             position: absolute;
             border-radius: 4px;
             opacity: 0;
-            animation: floatIn 1.5s ease-out forwards, floatDrift 8s ease-in-out infinite;
+            animation: floatIn 1.5s ease-out forwards;
+            will-change: transform;
+            transition: transform 0.1s linear;
         }
 
         .float-1 {
-            width: 60px; height: 60px;
+            width: 65px; height: 65px;
             border: 1.5px solid rgba(126, 184, 212, 0.15);
             top: 12%; left: 6%;
-            animation-delay: 0.8s, 0.8s;
+            animation-delay: 0.8s;
         }
         .float-2 {
-            width: 40px; height: 40px;
+            width: 45px; height: 45px;
             background: rgba(212, 137, 110, 0.06);
             border: 1px solid rgba(212, 137, 110, 0.1);
             top: 22%; right: 10%;
-            animation-delay: 1.2s, 1.2s;
+            animation-delay: 1.2s;
         }
         .float-3 {
-            width: 80px; height: 80px;
+            width: 85px; height: 85px;
             border: 1px solid rgba(163, 176, 126, 0.12);
-            bottom: 22%; left: 4%;
-            animation-delay: 1s, 1s;
+            bottom: 18%; left: 4%;
+            animation-delay: 1s;
             border-radius: 50%;
         }
         .float-4 {
-            width: 30px; height: 30px;
+            width: 35px; height: 35px;
             background: rgba(126, 184, 212, 0.07);
-            bottom: 32%; right: 7%;
-            animation-delay: 1.4s, 1.4s;
+            bottom: 30%; right: 7%;
+            animation-delay: 1.4s;
         }
         .float-5 {
-            width: 50px; height: 50px;
+            width: 55px; height: 55px;
             border: 1px solid rgba(212, 137, 110, 0.08);
             top: 55%; left: 12%;
-            animation-delay: 1.6s, 1.6s;
+            animation-delay: 1.6s;
             border-radius: 50%;
         }
         .float-6 {
-            width: 20px; height: 20px;
+            width: 24px; height: 24px;
             background: rgba(163, 176, 126, 0.08);
             top: 38%; right: 16%;
-            animation-delay: 1.1s, 1.1s;
+            animation-delay: 1.1s;
+            transform: rotate(45deg);
+        }
+        .float-7 {
+            width: 40px; height: 40px;
+            border: 1px solid rgba(126, 184, 212, 0.1);
+            top: 70%; right: 20%;
+            animation-delay: 1.3s;
+            border-radius: 50%;
+        }
+        .float-8 {
+            width: 28px; height: 28px;
+            border: 1px solid rgba(212, 137, 110, 0.12);
+            top: 8%; right: 30%;
+            animation-delay: 0.9s;
             transform: rotate(45deg);
         }
 
@@ -124,24 +130,19 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        @keyframes floatDrift {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-12px); }
-        }
-
-        /* Hero text animations */
+        /* Hero text */
         .hero-content {
             position: relative;
             z-index: 2;
             text-align: center;
             width: 100%;
-            max-width: 600px;
+            max-width: 640px;
         }
 
         .hero-subtitle-top {
             font-family: 'Work Sans', sans-serif;
             font-weight: 300;
-            font-size: 0.75rem;
+            font-size: 0.9rem;
             letter-spacing: 0.35em;
             text-transform: uppercase;
             color: var(--terracotta);
@@ -153,7 +154,7 @@
         .hero-title {
             font-family: 'Cormorant Garamond', Georgia, serif;
             font-weight: 300;
-            font-size: clamp(4.5rem, 18vw, 10rem);
+            font-size: clamp(5.4rem, 20vw, 12rem);
             line-height: 0.85;
             letter-spacing: -0.02em;
             color: var(--text-primary);
@@ -177,7 +178,7 @@
             font-family: 'Cormorant Garamond', Georgia, serif;
             font-weight: 400;
             font-style: italic;
-            font-size: clamp(1.1rem, 3.5vw, 1.6rem);
+            font-size: clamp(1.32rem, 4vw, 1.92rem);
             color: var(--text-secondary);
             opacity: 0;
             animation: revealUp 1s cubic-bezier(0.4, 0, 0.2, 1) 0.9s forwards;
@@ -187,58 +188,71 @@
         .hero-date {
             font-family: 'Work Sans', sans-serif;
             font-weight: 400;
-            font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+            font-size: clamp(1.08rem, 3vw, 1.32rem);
             letter-spacing: 0.08em;
             color: var(--text-primary);
             opacity: 0;
             animation: revealUp 1s cubic-bezier(0.4, 0, 0.2, 1) 1.1s forwards;
-            margin-bottom: 0.8rem;
+            margin-bottom: 1.5rem;
         }
 
-        .hero-tagline {
-            font-family: 'Cormorant Garamond', Georgia, serif;
-            font-weight: 400;
-            font-style: italic;
-            font-size: clamp(1rem, 2.5vw, 1.2rem);
-            color: var(--terracotta);
+        /* New tagline — the big statement */
+        .hero-statement {
             opacity: 0;
             animation: revealUp 1s cubic-bezier(0.4, 0, 0.2, 1) 1.3s forwards;
-            margin-bottom: 2.5rem;
+            margin-bottom: 1.5rem;
         }
 
-        /* Hero stats row */
-        .hero-stats {
-            display: flex;
-            justify-content: center;
-            gap: 2.5rem;
+        .hero-statement-line {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-weight: 600;
+            font-size: clamp(1.5rem, 4.5vw, 2.2rem);
+            color: var(--text-primary);
+            line-height: 1.3;
+        }
+
+        .hero-statement-line .accent {
+            color: var(--terracotta);
+        }
+
+        .hero-statement-sep {
+            display: inline-block;
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background: var(--text-tertiary);
+            vertical-align: middle;
+            margin: 0 0.6rem;
+        }
+
+        /* Countdown — subtle, below statement */
+        .hero-countdown {
             opacity: 0;
             animation: revealUp 1s cubic-bezier(0.4, 0, 0.2, 1) 1.5s forwards;
             margin-bottom: 2rem;
         }
 
-        .hero-stat { text-align: center; }
+        .hero-countdown-inner {
+            display: inline-flex;
+            align-items: baseline;
+            gap: 0.4rem;
+            padding: 0.5rem 1.2rem;
+            border-radius: 100px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
 
-        .hero-stat-value {
+        .countdown-number {
             font-family: 'Cormorant Garamond', Georgia, serif;
             font-weight: 600;
-            font-size: 1.8rem;
-            color: var(--text-primary);
-            line-height: 1;
+            font-size: 1.56rem;
+            color: var(--terracotta);
         }
 
-        .hero-stat-label {
-            font-size: 0.65rem;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
+        .countdown-label {
+            font-size: 0.78rem;
             color: var(--text-tertiary);
-            margin-top: 0.4rem;
-        }
-
-        .hero-stat-divider {
-            width: 1px;
-            height: 40px;
-            background: rgba(255, 255, 255, 0.1);
-            align-self: center;
+            letter-spacing: 0.05em;
         }
 
         /* Weather bar (inside hero) */
@@ -247,14 +261,14 @@
             align-items: center;
             justify-content: center;
             gap: 1.5rem;
-            padding: 1rem 1.5rem;
+            padding: 1.1rem 1.7rem;
             border-radius: 14px;
             background: rgba(255, 255, 255, 0.04);
             border: 1px solid rgba(255, 255, 255, 0.06);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             opacity: 0;
-            animation: revealUp 1s cubic-bezier(0.4, 0, 0.2, 1) 1.6s forwards;
+            animation: revealUp 1s cubic-bezier(0.4, 0, 0.2, 1) 1.65s forwards;
             margin-bottom: 2rem;
             flex-wrap: wrap;
         }
@@ -265,24 +279,24 @@
             gap: 0.5rem;
         }
 
-        .weather-icon { font-size: 1.3rem; }
+        .weather-icon { font-size: 1.5rem; }
 
         .weather-value {
             font-family: 'Cormorant Garamond', Georgia, serif;
             font-weight: 600;
-            font-size: 1.2rem;
+            font-size: 1.44rem;
             color: var(--text-primary);
         }
 
         .weather-label {
-            font-size: 0.65rem;
+            font-size: 0.78rem;
             color: var(--text-tertiary);
             letter-spacing: 0.05em;
         }
 
         .weather-sep {
             width: 1px;
-            height: 24px;
+            height: 28px;
             background: rgba(255, 255, 255, 0.08);
         }
 
@@ -291,7 +305,7 @@
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            padding: 0.85rem 2rem;
+            padding: 1rem 2.2rem;
             border-radius: 100px;
             border: 1.5px solid rgba(255, 255, 255, 0.1);
             background: rgba(255, 255, 255, 0.05);
@@ -299,13 +313,13 @@
             -webkit-backdrop-filter: blur(10px);
             font-family: 'Work Sans', sans-serif;
             font-weight: 500;
-            font-size: 0.8rem;
+            font-size: 0.96rem;
             letter-spacing: 0.06em;
             color: var(--text-primary);
             cursor: pointer;
             transition: all 0.3s ease;
             opacity: 0;
-            animation: revealUp 1s cubic-bezier(0.4, 0, 0.2, 1) 1.8s forwards;
+            animation: revealUp 1s cubic-bezier(0.4, 0, 0.2, 1) 1.85s forwards;
         }
 
         .btn-calendar:hover {
@@ -316,7 +330,7 @@
         }
 
         .btn-calendar:active { transform: translateY(0); }
-        .btn-calendar svg { width: 16px; height: 16px; }
+        .btn-calendar svg { width: 18px; height: 18px; }
 
         /* Scroll indicator */
         .scroll-indicator {
@@ -338,9 +352,7 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* ═══════════════════════════════════════
-           STICKY NAVIGATION
-        ═══════════════════════════════════════ */
+        /* ═══ STICKY NAV ═══ */
         .sticky-nav {
             position: sticky;
             top: 0;
@@ -352,7 +364,6 @@
             transform: translateY(-100%);
             transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
-
         .sticky-nav.visible { transform: translateY(0); }
 
         .nav-inner {
@@ -367,7 +378,7 @@
 
         .nav-link {
             flex-shrink: 0;
-            font-size: 0.7rem;
+            font-size: 0.84rem;
             font-weight: 500;
             letter-spacing: 0.15em;
             text-transform: uppercase;
@@ -382,8 +393,7 @@
         .nav-link::after {
             content: '';
             position: absolute;
-            bottom: 0;
-            left: 0;
+            bottom: 0; left: 0;
             width: 0;
             height: 1.5px;
             background: var(--terracotta);
@@ -394,11 +404,9 @@
         .nav-link.active { color: var(--terracotta); }
         .nav-link.active::after { width: 100%; }
 
-        /* ═══════════════════════════════════════
-           SECTIONS
-        ═══════════════════════════════════════ */
+        /* ═══ SECTIONS ═══ */
         .section-container {
-            max-width: 680px;
+            max-width: 720px;
             margin: 0 auto;
             padding: 0 1.5rem;
         }
@@ -416,8 +424,7 @@
         }
 
         .section-label {
-            font-family: 'Work Sans', sans-serif;
-            font-size: 0.65rem;
+            font-size: 0.78rem;
             font-weight: 500;
             letter-spacing: 0.3em;
             text-transform: uppercase;
@@ -428,7 +435,7 @@
         .section-title {
             font-family: 'Cormorant Garamond', Georgia, serif;
             font-weight: 400;
-            font-size: clamp(2rem, 5vw, 2.8rem);
+            font-size: clamp(2.4rem, 6vw, 3.36rem);
             color: var(--text-primary);
             line-height: 1.15;
             margin-bottom: 0.5rem;
@@ -438,12 +445,12 @@
             font-family: 'Cormorant Garamond', Georgia, serif;
             font-weight: 400;
             font-style: italic;
-            font-size: 1rem;
+            font-size: 1.2rem;
             color: var(--text-tertiary);
             margin-bottom: 2rem;
         }
 
-        /* Scroll reveal */
+        /* Scroll reveal — repeats */
         .reveal {
             opacity: 0;
             transform: translateY(30px);
@@ -454,9 +461,7 @@
             transform: translateY(0);
         }
 
-        /* ═══════════════════════════════════════
-           CARDS
-        ═══════════════════════════════════════ */
+        /* ═══ CARDS ═══ */
         .card {
             background: var(--bg-card);
             border: 1px solid var(--border);
@@ -487,7 +492,7 @@
         }
 
         .card-icon {
-            font-size: 1.8rem;
+            font-size: 2.16rem;
             line-height: 1;
             flex-shrink: 0;
         }
@@ -495,13 +500,13 @@
         .card-title {
             font-family: 'Cormorant Garamond', Georgia, serif;
             font-weight: 600;
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             color: var(--text-primary);
             line-height: 1.2;
         }
 
         .card-desc {
-            font-size: 0.78rem;
+            font-size: 0.94rem;
             color: var(--text-tertiary);
             margin-top: 0.15rem;
         }
@@ -512,35 +517,29 @@
             flex-shrink: 0;
         }
 
-        .card-expandable.expanded .expand-arrow {
-            transform: rotate(180deg);
-        }
+        .card-expandable.expanded .expand-arrow { transform: rotate(180deg); }
 
-        /* Card summary bar */
         .card-summary {
             margin-top: 1.25rem;
-            padding: 0.85rem 1.1rem;
+            padding: 1rem 1.25rem;
             border-radius: 12px;
             background: var(--bg-surface);
             border: 1px solid var(--border);
         }
 
         .card-summary p {
-            font-size: 0.82rem;
+            font-size: 0.98rem;
             color: var(--text-secondary);
             line-height: 1.5;
         }
 
-        /* Expandable content */
         .card-expand {
             max-height: 0;
             overflow: hidden;
             transition: max-height 0.6s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .card-expandable.expanded .card-expand {
-            max-height: 3000px;
-        }
+        .card-expandable.expanded .card-expand { max-height: 3000px; }
 
         .card-expand-inner { padding-top: 1.5rem; }
 
@@ -552,7 +551,7 @@
 
         /* TBD Notice */
         .tbd-notice {
-            padding: 1.25rem;
+            padding: 1.4rem;
             border-radius: 14px;
             background: var(--terracotta-dim);
             border: 1px solid rgba(212, 137, 110, 0.1);
@@ -567,28 +566,23 @@
         }
 
         .tbd-badge span {
-            font-size: 0.65rem;
+            font-size: 0.78rem;
             font-weight: 600;
             letter-spacing: 0.2em;
             text-transform: uppercase;
             color: var(--terracotta);
         }
 
-        .tbd-badge svg {
-            width: 14px;
-            height: 14px;
-            color: var(--terracotta);
-        }
+        .tbd-badge svg { width: 16px; height: 16px; color: var(--terracotta); }
 
         .tbd-notice p {
-            font-size: 0.82rem;
+            font-size: 0.98rem;
             color: var(--text-secondary);
             line-height: 1.6;
         }
 
-        /* Requirements list */
         .req-title {
-            font-size: 0.65rem;
+            font-size: 0.78rem;
             font-weight: 500;
             letter-spacing: 0.2em;
             text-transform: uppercase;
@@ -600,25 +594,23 @@
             display: flex;
             align-items: flex-start;
             gap: 0.75rem;
-            margin-bottom: 0.75rem;
+            margin-bottom: 0.85rem;
         }
 
         .req-dot {
-            width: 5px;
-            height: 5px;
+            width: 6px; height: 6px;
             border-radius: 50%;
             background: var(--terracotta);
-            margin-top: 0.45rem;
+            margin-top: 0.5rem;
             flex-shrink: 0;
         }
 
         .req-item span {
-            font-size: 0.85rem;
+            font-size: 1.02rem;
             color: var(--text-secondary);
             line-height: 1.5;
         }
 
-        /* Placeholder grid */
         .placeholder-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -629,7 +621,7 @@
         .placeholder-item { opacity: 0.35; }
 
         .placeholder-label {
-            font-size: 0.6rem;
+            font-size: 0.72rem;
             letter-spacing: 0.15em;
             text-transform: uppercase;
             color: var(--text-tertiary);
@@ -639,13 +631,11 @@
         .placeholder-value {
             font-family: 'Cormorant Garamond', Georgia, serif;
             font-weight: 500;
-            font-size: 1.1rem;
+            font-size: 1.32rem;
             color: var(--text-primary);
         }
 
-        /* ═══════════════════════════════════════
-           BUDGET
-        ═══════════════════════════════════════ */
+        /* ═══ BUDGET ═══ */
         .budget-overview {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -655,7 +645,7 @@
 
         .budget-box {
             text-align: center;
-            padding: 1.25rem 1rem;
+            padding: 1.4rem 1rem;
             border-radius: 14px;
             border: 1px solid var(--border);
         }
@@ -664,7 +654,7 @@
         .budget-box-estimate { background: var(--terracotta-dim); }
 
         .budget-label {
-            font-size: 0.6rem;
+            font-size: 0.72rem;
             letter-spacing: 0.2em;
             text-transform: uppercase;
             color: var(--text-tertiary);
@@ -674,14 +664,14 @@
         .budget-value {
             font-family: 'Cormorant Garamond', Georgia, serif;
             font-weight: 600;
-            font-size: 1.6rem;
+            font-size: 1.92rem;
             color: var(--text-primary);
         }
 
         .budget-value-accent { color: var(--terracotta); }
 
         .budget-section-title {
-            font-size: 0.6rem;
+            font-size: 0.72rem;
             font-weight: 600;
             letter-spacing: 0.2em;
             text-transform: uppercase;
@@ -694,7 +684,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0.75rem 0;
+            padding: 0.85rem 0;
         }
 
         .budget-row + .budget-row {
@@ -702,13 +692,13 @@
         }
 
         .budget-row-name {
-            font-size: 0.85rem;
+            font-size: 1.02rem;
             font-weight: 500;
             color: var(--text-primary);
         }
 
         .budget-row-desc {
-            font-size: 0.72rem;
+            font-size: 0.86rem;
             color: var(--text-tertiary);
             margin-top: 0.1rem;
         }
@@ -716,7 +706,7 @@
         .budget-row-amount {
             font-family: 'Cormorant Garamond', Georgia, serif;
             font-weight: 600;
-            font-size: 1.25rem;
+            font-size: 1.5rem;
             color: var(--text-primary);
             white-space: nowrap;
             text-align: right;
@@ -726,16 +716,14 @@
 
         .budget-avg {
             font-family: 'Work Sans', sans-serif;
-            font-size: 0.65rem;
+            font-size: 0.78rem;
             font-weight: 400;
             color: var(--text-tertiary);
             margin-top: 0.15rem;
             text-align: right;
         }
 
-        /* ═══════════════════════════════════════
-           FOOTER
-        ═══════════════════════════════════════ */
+        /* ═══ FOOTER ═══ */
         .footer {
             text-align: center;
             padding: 3rem 1.5rem 4rem;
@@ -744,31 +732,27 @@
         .footer-text {
             font-family: 'Cormorant Garamond', Georgia, serif;
             font-style: italic;
-            font-size: 1.1rem;
+            font-size: 1.32rem;
             color: var(--text-tertiary);
             margin-bottom: 0.5rem;
         }
 
         .footer-sub {
-            font-size: 0.7rem;
+            font-size: 0.84rem;
             color: var(--text-tertiary);
             letter-spacing: 0.1em;
             opacity: 0.5;
         }
 
-        /* ═══════════════════════════════════════
-           RESPONSIVE
-        ═══════════════════════════════════════ */
+        /* ═══ RESPONSIVE ═══ */
         @media (min-width: 768px) {
             .hero { padding: 4rem 2rem 3rem; }
             .section-container { padding: 0 2rem; }
             .card { padding: 2.5rem; }
-            .hero-stats { gap: 3.5rem; }
         }
 
         @media (max-width: 380px) {
-            .hero-stats { gap: 1.5rem; }
-            .hero-stat-value { font-size: 1.5rem; }
+            .hero-statement-line { font-size: 1.3rem; }
             .budget-overview { grid-template-columns: 1fr; }
             .hero-weather { gap: 1rem; }
         }
@@ -786,49 +770,48 @@
         </div>
     </nav>
 
-    <!-- ═══ HERO SECTION ═══ -->
+    <!-- ═══ HERO ═══ -->
     <section class="hero" id="overview">
         <canvas class="hero-gradient-canvas" id="gradientCanvas"></canvas>
         
-        <!-- Floating decorative elements -->
-        <div class="float-element float-1"></div>
-        <div class="float-element float-2"></div>
-        <div class="float-element float-3"></div>
-        <div class="float-element float-4"></div>
-        <div class="float-element float-5"></div>
-        <div class="float-element float-6"></div>
+        <div class="float-element float-1" data-speed="0.15"></div>
+        <div class="float-element float-2" data-speed="-0.1"></div>
+        <div class="float-element float-3" data-speed="0.2"></div>
+        <div class="float-element float-4" data-speed="-0.18"></div>
+        <div class="float-element float-5" data-speed="0.12"></div>
+        <div class="float-element float-6" data-speed="-0.22"></div>
+        <div class="float-element float-7" data-speed="0.16"></div>
+        <div class="float-element float-8" data-speed="-0.13"></div>
 
         <div class="hero-content">
             <p class="hero-subtitle-top">Summer 2026</p>
             
-            <h1 class="hero-title" id="heroTitle">
-                Lisboa
-            </h1>
+            <h1 class="hero-title" id="heroTitle">Lisboa</h1>
             
             <p class="hero-country">Portugal</p>
             
             <p class="hero-date">4th — 8th June 2026</p>
             
-            <p class="hero-tagline">"7 cocks powered by super bock"</p>
-
-            <div class="hero-stats">
-                <div class="hero-stat">
-                    <div class="hero-stat-value">4</div>
-                    <div class="hero-stat-label">Nights</div>
-                </div>
-                <div class="hero-stat-divider"></div>
-                <div class="hero-stat">
-                    <div class="hero-stat-value">7</div>
-                    <div class="hero-stat-label">Weapons</div>
-                </div>
-                <div class="hero-stat-divider"></div>
-                <div class="hero-stat">
-                    <div class="hero-stat-value" id="countdownDays">—</div>
-                    <div class="hero-stat-label">Days to go</div>
+            <!-- The big statement -->
+            <div class="hero-statement">
+                <div class="hero-statement-line">
+                    <span class="accent">4</span> nights
+                    <span class="hero-statement-sep"></span>
+                    <span class="accent">7</span> weapons
+                    <span class="hero-statement-sep"></span>
+                    <span class="accent">1 million</span> beers
                 </div>
             </div>
 
-            <!-- Weather bar inside hero -->
+            <!-- Subtle countdown pill -->
+            <div class="hero-countdown">
+                <div class="hero-countdown-inner">
+                    <span class="countdown-number" id="countdownDays">—</span>
+                    <span class="countdown-label">days to go</span>
+                </div>
+            </div>
+
+            <!-- Weather -->
             <div class="hero-weather">
                 <div class="weather-group">
                     <span class="weather-icon">☀️</span>
@@ -847,8 +830,8 @@
                 </div>
                 <div class="weather-sep"></div>
                 <div>
-                    <div style="font-size: 0.78rem; color: var(--text-secondary);">Sunny & warm</div>
-                    <div style="font-size: 0.6rem; color: var(--text-tertiary); font-style: italic;">June average</div>
+                    <div style="font-size: 0.94rem; color: var(--text-secondary);">Sunny & warm</div>
+                    <div style="font-size: 0.72rem; color: var(--text-tertiary); font-style: italic;">June average</div>
                 </div>
             </div>
 
@@ -870,7 +853,7 @@
         </div>
     </section>
 
-    <!-- ═══ FLIGHTS SECTION ═══ -->
+    <!-- ═══ FLIGHTS ═══ -->
     <div class="section-divider"></div>
     <section class="section-spacing" id="flights">
         <div class="section-container">
@@ -889,7 +872,7 @@
                             <p class="card-desc">Tap to view details</p>
                         </div>
                     </div>
-                    <svg class="expand-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+                    <svg class="expand-arrow" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
                 </div>
 
                 <div class="card-summary">
@@ -913,37 +896,16 @@
 
                         <div style="margin-bottom: 1.5rem;">
                             <p class="req-title">Requirements</p>
-                            <div class="req-item">
-                                <div class="req-dot"></div>
-                                <span>Direct / non-stop flights only</span>
-                            </div>
-                            <div class="req-item">
-                                <div class="req-dot"></div>
-                                <span>Departing from London</span>
-                            </div>
-                            <div class="req-item">
-                                <div class="req-dot"></div>
-                                <span>Budget: approximately £170pp return</span>
-                            </div>
+                            <div class="req-item"><div class="req-dot"></div><span>Direct / non-stop flights only</span></div>
+                            <div class="req-item"><div class="req-dot"></div><span>Departing from London</span></div>
+                            <div class="req-item"><div class="req-dot"></div><span>Budget: approximately £170pp return</span></div>
                         </div>
 
                         <div class="placeholder-grid">
-                            <div class="placeholder-item">
-                                <p class="placeholder-label">Outbound</p>
-                                <p class="placeholder-value">TBD</p>
-                            </div>
-                            <div class="placeholder-item">
-                                <p class="placeholder-label">Return</p>
-                                <p class="placeholder-value">TBD</p>
-                            </div>
-                            <div class="placeholder-item">
-                                <p class="placeholder-label">Airline</p>
-                                <p class="placeholder-value">TBD</p>
-                            </div>
-                            <div class="placeholder-item">
-                                <p class="placeholder-label">Baggage</p>
-                                <p class="placeholder-value">TBD</p>
-                            </div>
+                            <div class="placeholder-item"><p class="placeholder-label">Outbound</p><p class="placeholder-value">TBD</p></div>
+                            <div class="placeholder-item"><p class="placeholder-label">Return</p><p class="placeholder-value">TBD</p></div>
+                            <div class="placeholder-item"><p class="placeholder-label">Airline</p><p class="placeholder-value">TBD</p></div>
+                            <div class="placeholder-item"><p class="placeholder-label">Baggage</p><p class="placeholder-value">TBD</p></div>
                         </div>
                     </div>
                 </div>
@@ -951,7 +913,7 @@
         </div>
     </section>
 
-    <!-- ═══ ACCOMMODATION SECTION ═══ -->
+    <!-- ═══ ACCOMMODATION ═══ -->
     <div class="section-divider"></div>
     <section class="section-spacing" id="accommodation">
         <div class="section-container">
@@ -970,7 +932,7 @@
                             <p class="card-desc">Tap to view details</p>
                         </div>
                     </div>
-                    <svg class="expand-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+                    <svg class="expand-arrow" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
                 </div>
 
                 <div class="card-summary">
@@ -994,37 +956,16 @@
 
                         <div style="margin-bottom: 1.5rem;">
                             <p class="req-title">Requirements</p>
-                            <div class="req-item">
-                                <div class="req-dot"></div>
-                                <span>Apartment — 7+ person capacity</span>
-                            </div>
-                            <div class="req-item">
-                                <div class="req-dot"></div>
-                                <span>Within 15 mins of the action (20 min taxi max)</span>
-                            </div>
-                            <div class="req-item">
-                                <div class="req-dot"></div>
-                                <span>Budget: £220–300pp for 4 nights</span>
-                            </div>
+                            <div class="req-item"><div class="req-dot"></div><span>Apartment — 7+ person capacity</span></div>
+                            <div class="req-item"><div class="req-dot"></div><span>Within 15 mins of the action (20 min taxi max)</span></div>
+                            <div class="req-item"><div class="req-dot"></div><span>Budget: £220–300pp for 4 nights</span></div>
                         </div>
 
                         <div class="placeholder-grid">
-                            <div class="placeholder-item">
-                                <p class="placeholder-label">Check-In</p>
-                                <p class="placeholder-value">TBD</p>
-                            </div>
-                            <div class="placeholder-item">
-                                <p class="placeholder-label">Check-Out</p>
-                                <p class="placeholder-value">TBD</p>
-                            </div>
-                            <div class="placeholder-item">
-                                <p class="placeholder-label">Address</p>
-                                <p class="placeholder-value">TBD</p>
-                            </div>
-                            <div class="placeholder-item">
-                                <p class="placeholder-label">Host Contact</p>
-                                <p class="placeholder-value">TBD</p>
-                            </div>
+                            <div class="placeholder-item"><p class="placeholder-label">Check-In</p><p class="placeholder-value">TBD</p></div>
+                            <div class="placeholder-item"><p class="placeholder-label">Check-Out</p><p class="placeholder-value">TBD</p></div>
+                            <div class="placeholder-item"><p class="placeholder-label">Address</p><p class="placeholder-value">TBD</p></div>
+                            <div class="placeholder-item"><p class="placeholder-label">Host Contact</p><p class="placeholder-value">TBD</p></div>
                         </div>
                     </div>
                 </div>
@@ -1032,7 +973,7 @@
         </div>
     </section>
 
-    <!-- ═══ BUDGET SECTION ═══ -->
+    <!-- ═══ BUDGET ═══ -->
     <div class="section-divider"></div>
     <section class="section-spacing" id="budget">
         <div class="section-container">
@@ -1051,7 +992,7 @@
                             <p class="card-desc">Tap for full breakdown</p>
                         </div>
                     </div>
-                    <svg class="expand-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+                    <svg class="expand-arrow" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
                 </div>
 
                 <div class="budget-overview">
@@ -1139,11 +1080,11 @@
     </footer>
 
     <script>
-        // ═══ SEAMLESS GRADIENT ANIMATION (Canvas) ═══
+        // ═══ SEAMLESS GRADIENT (Canvas) ═══
         (function() {
             const canvas = document.getElementById('gradientCanvas');
             const ctx = canvas.getContext('2d');
-            let w, h, time = 0;
+            let w, h;
 
             function resize() {
                 const dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -1157,7 +1098,6 @@
             resize();
             window.addEventListener('resize', resize);
 
-            // Colour orbs that drift around
             const orbs = [
                 { cx: 0.25, cy: 0.75, r: 0.45, color: [90, 140, 180], speed: 0.0003, phase: 0 },
                 { cx: 0.75, cy: 0.25, r: 0.5, color: [180, 110, 80], speed: 0.00025, phase: 2 },
@@ -1166,7 +1106,6 @@
             ];
 
             function draw(t) {
-                time = t;
                 ctx.fillStyle = '#0A0A0C';
                 ctx.fillRect(0, 0, w, h);
 
@@ -1174,29 +1113,58 @@
                     const cx = w * (orb.cx + 0.2 * Math.sin(t * orb.speed + orb.phase));
                     const cy = h * (orb.cy + 0.15 * Math.cos(t * orb.speed * 0.8 + orb.phase + 1));
                     const r = Math.max(w, h) * orb.r;
-
                     const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, r);
                     const [cr, cg, cb] = orb.color;
                     grad.addColorStop(0, `rgba(${cr}, ${cg}, ${cb}, 0.18)`);
                     grad.addColorStop(0.5, `rgba(${cr}, ${cg}, ${cb}, 0.06)`);
                     grad.addColorStop(1, `rgba(${cr}, ${cg}, ${cb}, 0)`);
-
                     ctx.fillStyle = grad;
                     ctx.fillRect(0, 0, w, h);
                 });
 
                 requestAnimationFrame(draw);
             }
-
             requestAnimationFrame(draw);
         })();
 
-        // ═══ LETTER-BY-LETTER HERO ANIMATION ═══
+        // ═══ SCROLL-REACTIVE FLOATING SHAPES ═══
+        (function() {
+            const floats = document.querySelectorAll('.float-element');
+            let lastScroll = 0;
+            let ticking = false;
+
+            function updateFloats() {
+                const scrollY = window.pageYOffset;
+                const heroHeight = document.querySelector('.hero').offsetHeight;
+                // Only apply effect while hero is in view
+                const progress = Math.min(scrollY / heroHeight, 1);
+
+                floats.forEach(el => {
+                    const speed = parseFloat(el.dataset.speed) || 0.1;
+                    const translateY = scrollY * speed;
+                    // Add slight horizontal drift and rotation based on scroll
+                    const translateX = scrollY * speed * 0.3;
+                    const rotate = scrollY * speed * 0.05;
+                    el.style.transform = `translate(${translateX}px, ${translateY}px) rotate(${rotate}deg)`;
+                    // Fade out as user scrolls past hero
+                    el.style.opacity = Math.max(0, 1 - progress * 1.5);
+                });
+                ticking = false;
+            }
+
+            window.addEventListener('scroll', () => {
+                if (!ticking) {
+                    requestAnimationFrame(updateFloats);
+                    ticking = true;
+                }
+            }, { passive: true });
+        })();
+
+        // ═══ LETTER-BY-LETTER HERO ═══
         (function() {
             const title = document.getElementById('heroTitle');
             const text = title.textContent.trim();
             title.textContent = '';
-            
             text.split('').forEach((char, i) => {
                 const span = document.createElement('span');
                 span.className = 'letter';
@@ -1209,8 +1177,7 @@
         // ═══ COUNTDOWN ═══
         function updateCountdown() {
             const target = new Date('2026-06-04T00:00:00').getTime();
-            const now = Date.now();
-            const diff = target - now;
+            const diff = target - Date.now();
             const el = document.getElementById('countdownDays');
             if (diff <= 0) { el.textContent = '0'; return; }
             el.textContent = Math.floor(diff / (1000 * 60 * 60 * 24));
@@ -1229,11 +1196,10 @@
                 'DTSTART:' + fmt(new Date('2026-06-04T12:00:00')),
                 'DTEND:' + fmt(new Date('2026-06-08T18:00:00')),
                 'SUMMARY:Lisbon Trip 2026',
-                'DESCRIPTION:4 nights in Lisbon — 7 cocks powered by super bock',
+                'DESCRIPTION:4 nights · 7 weapons · 1 million beers',
                 'LOCATION:Lisbon\\, Portugal',
                 'END:VEVENT','END:VCALENDAR'
             ].join('\r\n');
-
             const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
             const a = document.createElement('a');
             a.href = URL.createObjectURL(blob);
@@ -1251,10 +1217,15 @@
             });
         });
 
-        // ═══ SCROLL REVEAL ═══
+        // ═══ SCROLL REVEAL (repeats every time) ═══
         const revealObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
-                if (entry.isIntersecting) entry.target.classList.add('visible');
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                } else {
+                    // Remove visible class so it animates again next time
+                    entry.target.classList.remove('visible');
+                }
             });
         }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
         document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
