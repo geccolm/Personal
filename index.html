@@ -187,7 +187,7 @@
         ═══════════════════════════════════════ */
         .intro-scroll {
             position: relative;
-            height: 250vh;
+            height: 400vh;
         }
 
         .intro-sticky {
@@ -200,6 +200,27 @@
             justify-content: center;
             gap: 0;
             z-index: 1;
+        }
+
+        .intro-scroll-hint {
+            position: absolute;
+            bottom: 2.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            animation: hintFadeIn 1s ease 1.2s forwards, gentleBounce 3s ease-in-out 2.2s infinite;
+        }
+
+        .intro-scroll-hint svg {
+            width: 28px;
+            height: 28px;
+            stroke: var(--text-tertiary);
+            opacity: 0.6;
+        }
+
+        @keyframes hintFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         .intro-line {
@@ -691,6 +712,11 @@
             <p class="intro-line intro-line-stat" data-intro="1"><span class="accent">4</span> nights</p>
             <p class="intro-line intro-line-stat" data-intro="2"><span class="accent">7</span> legends</p>
             <p class="intro-line intro-line-stat" data-intro="3"><span class="accent">1 million</span> beers</p>
+            <div class="intro-scroll-hint" id="introScrollHint">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 5v14M19 12l-7 7-7-7"/>
+                </svg>
+            </div>
         </div>
     </div>
 
@@ -917,13 +943,20 @@
             const introScroll = document.getElementById('introScroll');
             const lines = document.querySelectorAll('.intro-line');
             // Thresholds: Summer 2026 at 0%, then 4 nights/7 legends/1 million beers staggered
-            const thresholds = [0, 0.25, 0.45, 0.65];
+            const thresholds = [0, 0.25, 0.50, 0.75];
+            const scrollHint = document.getElementById('introScrollHint');
 
             function updateIntro() {
                 const rect = introScroll.getBoundingClientRect();
                 const scrolled = -rect.top;
                 const totalScroll = introScroll.offsetHeight - window.innerHeight;
                 const progress = Math.max(0, Math.min(1, scrolled / totalScroll));
+
+                // Fade out scroll hint once user starts scrolling
+                if (scrollHint) {
+                    scrollHint.style.opacity = progress > 0.02 ? '0' : '';
+                    scrollHint.style.transition = 'opacity 0.5s ease';
+                }
 
                 lines.forEach((line, i) => {
                     if (progress >= thresholds[i]) {
@@ -1032,12 +1065,12 @@
 
         // ═══ STICKY NAV ═══
         const stickyNav = document.getElementById('stickyNav');
-        const introScrollEl = document.getElementById('introScroll');
+        const heroSection = document.getElementById('overview');
 
         window.addEventListener('scroll', () => {
-            // Show nav only after intro + hero
-            const threshold = introScrollEl.offsetHeight + window.innerHeight * 0.5;
-            stickyNav.classList.toggle('visible', window.pageYOffset > threshold);
+            // Only show nav once user scrolls past the full hero section
+            const heroBottom = heroSection.offsetTop + heroSection.offsetHeight;
+            stickyNav.classList.toggle('visible', window.pageYOffset > heroBottom - 100);
         }, { passive: true });
 
         document.querySelectorAll('.nav-link').forEach(link => {
