@@ -119,75 +119,31 @@
             overflow: hidden;
         }
 
-        .grad-shape {
+        .emoji-float {
             position: absolute;
-            border-radius: 50%;
-            filter: blur(2px);
+            font-size: 2.4rem;
             will-change: transform;
+            opacity: 0.35;
+            user-select: none;
         }
 
-        .gs-1 {
-            width: 90px; height: 90px;
-            background: radial-gradient(circle, rgba(126, 184, 212, 0.35) 0%, rgba(126, 184, 212, 0.08) 70%, transparent 100%);
-            top: 15%; left: 8%;
-        }
-        .gs-2 {
-            width: 70px; height: 70px;
-            background: radial-gradient(circle, rgba(212, 137, 110, 0.4) 0%, rgba(212, 137, 110, 0.08) 70%, transparent 100%);
-            top: 25%; right: 12%;
-            border-radius: 6px;
-        }
-        .gs-3 {
-            width: 110px; height: 110px;
-            background: radial-gradient(circle, rgba(163, 176, 126, 0.3) 0%, rgba(163, 176, 126, 0.06) 70%, transparent 100%);
-            top: 55%; left: 5%;
-        }
-        .gs-4 {
-            width: 55px; height: 55px;
-            background: radial-gradient(circle, rgba(180, 130, 200, 0.3) 0%, rgba(180, 130, 200, 0.06) 70%, transparent 100%);
-            top: 40%; right: 15%;
-            border-radius: 4px;
-            transform: rotate(45deg);
-        }
-        .gs-5 {
-            width: 80px; height: 80px;
-            background: radial-gradient(circle, rgba(212, 137, 110, 0.3) 0%, rgba(212, 137, 110, 0.06) 70%, transparent 100%);
-            top: 70%; right: 20%;
-        }
-        .gs-6 {
-            width: 65px; height: 65px;
-            background: radial-gradient(circle, rgba(126, 184, 212, 0.3) 0%, rgba(126, 184, 212, 0.06) 70%, transparent 100%);
-            top: 80%; left: 15%;
-            border-radius: 6px;
-        }
-        .gs-7 {
-            width: 45px; height: 45px;
-            background: radial-gradient(circle, rgba(163, 176, 126, 0.35) 0%, rgba(163, 176, 126, 0.06) 70%, transparent 100%);
-            top: 10%; right: 35%;
-            border-radius: 4px;
-            transform: rotate(45deg);
-        }
-        .gs-8 {
-            width: 100px; height: 100px;
-            background: radial-gradient(circle, rgba(180, 130, 200, 0.2) 0%, rgba(180, 130, 200, 0.04) 70%, transparent 100%);
-            top: 35%; left: 25%;
-        }
-
-        [data-theme="light"] .gs-1 { background: radial-gradient(circle, rgba(90, 150, 200, 0.3) 0%, rgba(90, 150, 200, 0.06) 70%, transparent 100%); }
-        [data-theme="light"] .gs-2 { background: radial-gradient(circle, rgba(201, 123, 94, 0.35) 0%, rgba(201, 123, 94, 0.06) 70%, transparent 100%); }
-        [data-theme="light"] .gs-3 { background: radial-gradient(circle, rgba(139, 154, 107, 0.25) 0%, rgba(139, 154, 107, 0.04) 70%, transparent 100%); }
-        [data-theme="light"] .gs-4 { background: radial-gradient(circle, rgba(160, 120, 180, 0.25) 0%, rgba(160, 120, 180, 0.04) 70%, transparent 100%); }
-        [data-theme="light"] .gs-5 { background: radial-gradient(circle, rgba(201, 123, 94, 0.25) 0%, rgba(201, 123, 94, 0.04) 70%, transparent 100%); }
-        [data-theme="light"] .gs-6 { background: radial-gradient(circle, rgba(90, 150, 200, 0.25) 0%, rgba(90, 150, 200, 0.04) 70%, transparent 100%); }
-        [data-theme="light"] .gs-7 { background: radial-gradient(circle, rgba(139, 154, 107, 0.3) 0%, rgba(139, 154, 107, 0.04) 70%, transparent 100%); }
-        [data-theme="light"] .gs-8 { background: radial-gradient(circle, rgba(160, 120, 180, 0.15) 0%, rgba(160, 120, 180, 0.03) 70%, transparent 100%); }
+        .ef-1 { top: 12%; left: 6%; font-size: 3rem; }
+        .ef-2 { top: 24%; right: 10%; font-size: 2.2rem; }
+        .ef-3 { top: 52%; left: 4%; font-size: 2.8rem; }
+        .ef-4 { top: 38%; right: 14%; font-size: 2rem; }
+        .ef-5 { top: 68%; right: 18%; font-size: 2.6rem; }
+        .ef-6 { top: 78%; left: 12%; font-size: 2.1rem; }
+        .ef-7 { top: 8%; right: 32%; font-size: 2.3rem; }
+        .ef-8 { top: 42%; left: 22%; font-size: 1.9rem; }
+        .ef-9 { top: 88%; right: 8%; font-size: 2.2rem; }
+        .ef-10 { top: 60%; left: 18%; font-size: 2rem; }
 
         /* ═══════════════════════════════════════
            CINEMATIC SCROLL INTRO
         ═══════════════════════════════════════ */
         .intro-scroll {
             position: relative;
-            height: 400vh;
+            height: 200vh;
         }
 
         .intro-sticky {
@@ -716,14 +672,16 @@
 
     <!-- ═══ FLOATING GRADIENT SHAPES ═══ -->
     <div class="shapes-container" id="shapesContainer">
-        <div class="grad-shape gs-1"></div>
-        <div class="grad-shape gs-2"></div>
-        <div class="grad-shape gs-3"></div>
-        <div class="grad-shape gs-4"></div>
-        <div class="grad-shape gs-5"></div>
-        <div class="grad-shape gs-6"></div>
-        <div class="grad-shape gs-7"></div>
-        <div class="grad-shape gs-8"></div>
+        <div class="emoji-float ef-1">☀️</div>
+        <div class="emoji-float ef-2">🍺</div>
+        <div class="emoji-float ef-3">✈️</div>
+        <div class="emoji-float ef-4">🌴</div>
+        <div class="emoji-float ef-5">🍷</div>
+        <div class="emoji-float ef-6">🌊</div>
+        <div class="emoji-float ef-7">🇵🇹</div>
+        <div class="emoji-float ef-8">🍻</div>
+        <div class="emoji-float ef-9">🌅</div>
+        <div class="emoji-float ef-10">🎶</div>
     </div>
 
     <!-- ═══ CINEMATIC SCROLL INTRO ═══ -->
@@ -930,29 +888,29 @@
     </footer>
 
     <script>
-        // ═══ FLOATING GRADIENT SHAPES ANIMATION ═══
+        // ═══ FLOATING EMOJI ANIMATION ═══
         (function() {
-            const shapes = document.querySelectorAll('.grad-shape');
-            const basePositions = [];
+            const emojis = document.querySelectorAll('.emoji-float');
+            const configs = [];
 
-            shapes.forEach(s => {
-                basePositions.push({
-                    x: parseFloat(s.style.left || s.offsetLeft),
-                    y: parseFloat(s.style.top || s.offsetTop),
-                    speedX: (Math.random() - 0.5) * 0.3,
-                    speedY: (Math.random() - 0.5) * 0.25,
+            emojis.forEach(() => {
+                configs.push({
+                    speedX: (Math.random() - 0.5) * 0.8 + 0.4,
+                    speedY: (Math.random() - 0.5) * 0.7 + 0.35,
                     phaseX: Math.random() * Math.PI * 2,
                     phaseY: Math.random() * Math.PI * 2,
+                    rotSpeed: (Math.random() - 0.5) * 1.0,
+                    rotPhase: Math.random() * Math.PI * 2,
                 });
             });
 
             function animate(t) {
-                shapes.forEach((s, i) => {
-                    const bp = basePositions[i];
-                    const dx = Math.sin(t * 0.0004 * (bp.speedX + 0.5) + bp.phaseX) * 40;
-                    const dy = Math.cos(t * 0.0003 * (bp.speedY + 0.5) + bp.phaseY) * 30;
-                    const rotate = Math.sin(t * 0.0002 + bp.phaseX) * 15;
-                    s.style.transform = `translate(${dx}px, ${dy}px) rotate(${rotate}deg)`;
+                emojis.forEach((el, i) => {
+                    const c = configs[i];
+                    const dx = Math.sin(t * 0.0008 * c.speedX + c.phaseX) * 80;
+                    const dy = Math.cos(t * 0.0007 * c.speedY + c.phaseY) * 60;
+                    const rot = Math.sin(t * 0.0008 * c.rotSpeed + c.rotPhase) * 45;
+                    el.style.transform = `translate(${dx}px, ${dy}px) rotate(${rot}deg)`;
                 });
                 requestAnimationFrame(animate);
             }
@@ -963,9 +921,11 @@
         (function() {
             const introScroll = document.getElementById('introScroll');
             const lines = document.querySelectorAll('.intro-line');
-            // Thresholds: Summer 2026 at 0%, then 4 nights/7 legends/1 million beers staggered
-            const thresholds = [0, 0.25, 0.50, 0.75];
             const scrollHint = document.getElementById('introScrollHint');
+            let cascadeTriggered = false;
+
+            // Summer 2026 (line 0) shows immediately
+            lines[0].classList.add('visible');
 
             function updateIntro() {
                 const rect = introScroll.getBoundingClientRect();
@@ -979,13 +939,13 @@
                     scrollHint.style.transition = 'opacity 0.5s ease';
                 }
 
-                lines.forEach((line, i) => {
-                    if (progress >= thresholds[i]) {
-                        line.classList.add('visible');
-                    } else {
-                        line.classList.remove('visible');
-                    }
-                });
+                // On first scroll, cascade the 4/7/1m lines with 1.5s gaps
+                if (progress > 0.05 && !cascadeTriggered) {
+                    cascadeTriggered = true;
+                    setTimeout(() => lines[1].classList.add('visible'), 0);
+                    setTimeout(() => lines[2].classList.add('visible'), 1500);
+                    setTimeout(() => lines[3].classList.add('visible'), 3000);
+                }
             }
 
             window.addEventListener('scroll', updateIntro, { passive: true });
