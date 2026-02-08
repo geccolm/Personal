@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -208,14 +208,35 @@
             left: 50%;
             transform: translateX(-50%);
             opacity: 0;
-            animation: hintFadeIn 1s ease 1.2s forwards, gentleBounce 3s ease-in-out 2.2s infinite;
+            animation: hintFadeIn 1s ease 1.2s forwards;
         }
 
-        .intro-scroll-hint svg {
+        .scroll-mouse {
             width: 28px;
-            height: 28px;
-            stroke: var(--text-tertiary);
-            opacity: 0.6;
+            height: 46px;
+            border-radius: 14px;
+            border: 2px solid var(--terracotta);
+            position: relative;
+            opacity: 0.75;
+            overflow: hidden;
+        }
+
+        .scroll-mouse-dot {
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: var(--terracotta);
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: scrollSwipe 1.8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        @keyframes scrollSwipe {
+            0% { top: 30px; opacity: 1; }
+            50% { top: 9px; opacity: 0.8; }
+            70% { top: 9px; opacity: 0; }
+            100% { top: 30px; opacity: 0; }
         }
 
         @keyframes hintFadeIn {
@@ -239,8 +260,8 @@
         }
 
         .intro-line-summer {
-            font-weight: 300;
-            font-size: 0.9rem;
+            font-weight: 400;
+            font-size: clamp(1rem, 3vw, 1.4rem);
             letter-spacing: 0.35em;
             text-transform: uppercase;
             color: var(--terracotta);
@@ -713,9 +734,9 @@
             <p class="intro-line intro-line-stat" data-intro="2"><span class="accent">7</span> legends</p>
             <p class="intro-line intro-line-stat" data-intro="3"><span class="accent">1 million</span> beers</p>
             <div class="intro-scroll-hint" id="introScrollHint">
-                <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M12 5v14M19 12l-7 7-7-7"/>
-                </svg>
+                <div class="scroll-mouse">
+                    <div class="scroll-mouse-dot"></div>
+                </div>
             </div>
         </div>
     </div>
@@ -995,19 +1016,27 @@
                 letters.push(span);
             });
 
-            let heroRevealed = false;
+            let heroTimers = [];
 
             const heroObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
-                    if (entry.isIntersecting && !heroRevealed) {
-                        heroRevealed = true;
+                    if (entry.isIntersecting) {
                         // Stagger letter reveals
                         letters.forEach((l, i) => {
-                            setTimeout(() => l.classList.add('revealed'), i * 80);
+                            heroTimers.push(setTimeout(() => l.classList.add('revealed'), i * 80));
                         });
                         // Reveal other elements
                         revealEls.forEach(el => {
                             if (el) el.classList.add('revealed');
+                        });
+                    } else {
+                        // Clear any pending timers
+                        heroTimers.forEach(t => clearTimeout(t));
+                        heroTimers = [];
+                        // Reset all reveals so they re-animate on next visit
+                        letters.forEach(l => l.classList.remove('revealed'));
+                        revealEls.forEach(el => {
+                            if (el) el.classList.remove('revealed');
                         });
                     }
                 });
