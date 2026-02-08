@@ -31,8 +31,8 @@
 
         [data-theme="light"] {
             --bg: #FAF6F1;
-            --bg-card: rgba(255, 255, 255, 0.75);
-            --bg-card-hover: rgba(255, 255, 255, 0.9);
+            --bg-card: rgba(255, 255, 255, 1);
+            --bg-card-hover: rgba(255, 255, 255, 1);
             --bg-surface: rgba(27, 45, 62, 0.04);
             --text-primary: #1B2D3E;
             --text-secondary: #5A6B7A;
@@ -939,12 +939,28 @@
                     scrollHint.style.transition = 'opacity 0.5s ease';
                 }
 
-                // On first scroll, cascade the 4/7/1m lines with 1.5s gaps
+                // On first scroll, lock and cascade
                 if (progress > 0.05 && !cascadeTriggered) {
                     cascadeTriggered = true;
+
+                    // Lock scroll
+                    document.body.style.overflow = 'hidden';
+                    document.body.style.touchAction = 'none';
+
+                    // Cascade the lines
                     setTimeout(() => lines[1].classList.add('visible'), 0);
                     setTimeout(() => lines[2].classList.add('visible'), 1500);
                     setTimeout(() => lines[3].classList.add('visible'), 3000);
+
+                    // After cascade + 1.5s pause, unlock and auto-scroll to overview
+                    setTimeout(() => {
+                        document.body.style.overflow = '';
+                        document.body.style.touchAction = '';
+                        const overview = document.getElementById('overview');
+                        if (overview) {
+                            overview.scrollIntoView({ behavior: 'smooth' });
+                        }
+                    }, 4500);
                 }
             }
 
