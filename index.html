@@ -1140,6 +1140,10 @@
     </footer>
 
     <script>
+        // ═══ FORCE SCROLL TO TOP ON LOAD ═══
+        if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+        window.scrollTo(0, 0);
+
         // ═══ FLOATING EMOJI ANIMATION ═══
         (function() {
             const emojis = document.querySelectorAll('.emoji-float');
