@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lisbon 2026 · The Recommendations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,900&family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1c1714;
+    --paper: #f4 ece0;
+    --paper: #f5ede1;
+    --paper-2: #ece2d2;
+    --rust: #c14a26;
+    --rust-deep: #9c3617;
+    --olive: #5c6042;
+    --gold: #d99a2b;
+    --tile: #2f5d7c;
+    --line: #d8cbb5;
+    --shadow: rgba(40,28,18,0.13);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Archivo', sans-serif;
+    line-height:1.6;
+    background-image:
+      radial-gradient(circle at 12% 18%, rgba(193,74,38,0.06), transparent 35%),
+      radial-gradient(circle at 88% 72%, rgba(47,93,124,0.07), transparent 40%);
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap { max-width:1080px; margin:0 auto; padding:0 24px; }
+
+  /* ---- header ---- */
+  header {
+    padding:64px 0 38px;
+    border-bottom:2px solid var(--ink);
+    position:relative;
+  }
+  .kicker {
+    font-size:0.72rem; letter-spacing:0.34em; text-transform:uppercase;
+    font-weight:600; color:var(--rust); margin-bottom:18px;
+  }
+  h1 {
+    font-family:'Fraunces', serif; font-weight:900;
+    font-size:clamp(2.9rem, 7vw, 5.4rem); line-height:0.98;
+    letter-spacing:-0.02em; margin-bottom:20px;
+  }
+  h1 em { font-style:italic; color:var(--rust); }
+  .sub {
+    font-size:1.02rem; max-width:560px; color:#4a3f35;
+  }
+  .meta-row {
+    display:flex; flex-wrap:wrap; gap:10px 26px; margin-top:26px;
+    font-size:0.8rem; letter-spacing:0.04em; text-transform:uppercase;
+    font-weight:600; color:#6b5d4d;
+  }
+  .meta-row span b { color:var(--ink); }
+
+  /* ---- filter bar ---- */
+  .controls {
+    position:sticky; top:0; z-index:50;
+    background:rgba(245,237,225,0.93);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+    padding:14px 0;
+    margin-bottom:8px;
+  }
+  .controls .wrap { display:flex; flex-wrap:wrap; gap:8px; align-items:center; }
+  .ctl-label {
+    font-size:0.68rem; letter-spacing:0.2em; text-transform:uppercase;
+    font-weight:700; color:#8a7a64; margin-right:6px;
+  }
+  .chip {
+    font-family:'Archivo',sans-serif; font-size:0.8rem; font-weight:600;
+    padding:7px 15px; border:1.5px solid var(--ink); border-radius:40px;
+    background:transparent; color:var(--ink); cursor:pointer;
+    transition:all 0.18s ease; letter-spacing:0.01em;
+  }
+  .chip:hover { background:var(--paper-2); }
+  .chip.active { background:var(--ink); color:var(--paper); }
+  .chip[data-filter="nightlife"].active { background:var(--rust); border-color:var(--rust); }
+  .chip[data-filter="day"].active { background:var(--gold); border-color:var(--gold); color:var(--ink); }
+  .chip[data-filter="food"].active { background:var(--olive); border-color:var(--olive); }
+  .chip[data-filter="view"].active { background:var(--tile); border-color:var(--tile); }
+
+  /* ---- cluster ---- */
+  .cluster { padding:46px 0 8px; }
+  .cluster-head { display:flex; align-items:baseline; gap:16px; margin-bottom:6px; }
+  .cluster-num {
+    font-family:'Fraunces',serif; font-size:1rem; font-weight:600;
+    color:var(--rust); font-style:italic;
+  }
+  .cluster h2 {
+    font-family:'Fraunces',serif; font-weight:600; font-size:2rem;
+    letter-spacing:-0.01em;
+  }
+  .cluster-note {
+    font-size:0.92rem; color:#5a4e40; margin-bottom:30px; max-width:620px;
+    padding-left:2px;
+  }
+  .cluster-note .walk {
+    display:inline-block; font-weight:700; color:var(--olive);
+    font-size:0.82rem; letter-spacing:0.02em;
+  }
+
+  /* ---- card grid ---- */
+  .grid { display:grid; grid-template-columns:repeat(2,1fr); gap:20px; }
+  .card {
+    border:1.5px solid var(--ink); background:var(--paper-2);
+    padding:26px 24px 22px; position:relative;
+    transition:transform 0.22s ease, box-shadow 0.22s ease, opacity 0.3s ease;
+    display:flex; flex-direction:column;
+  }
+  .card:hover {
+    transform:translate(-3px,-3px);
+    box-shadow:7px 7px 0 var(--ink);
+  }
+  .card.hide { display:none; }
+  .card-top {
+    display:flex; justify-content:space-between; align-items:flex-start;
+    gap:12px; margin-bottom:14px;
+  }
+  .card h3 {
+    font-family:'Fraunces',serif; font-weight:600; font-size:1.42rem;
+    line-height:1.1; letter-spacing:-0.01em;
+  }
+  .card .where {
+    font-size:0.74rem; letter-spacing:0.13em; text-transform:uppercase;
+    font-weight:600; color:#8a7a64; margin-top:5px;
+  }
+  .tags { display:flex; flex-direction:column; gap:5px; align-items:flex-end; flex-shrink:0; }
+  .tag {
+    font-size:0.62rem; letter-spacing:0.1em; text-transform:uppercase;
+    font-weight:700; padding:4px 9px; border-radius:3px; white-space:nowrap;
+    color:var(--paper);
+  }
+  .tag.nightlife { background:var(--rust); }
+  .tag.day { background:var(--gold); color:var(--ink); }
+  .tag.food { background:var(--olive); }
+  .tag.view { background:var(--tile); }
+
+  .blurb { font-size:0.92rem; color:#3f352b; margin-bottom:16px; }
+
+  .fit {
+    border-left:3px solid var(--rust); padding:9px 0 9px 13px;
+    margin-bottom:14px; background:rgba(193,74,38,0.05);
+  }
+  .fit b {
+    font-size:0.68rem; letter-spacing:0.16em; text-transform:uppercase;
+    color:var(--rust-deep); display:block; margin-bottom:2px;
+  }
+  .fit span { font-size:0.88rem; }
+
+  .intel { margin-top:auto; display:flex; flex-direction:column; gap:7px; }
+  .intel .bit {
+    display:flex; gap:9px; font-size:0.82rem; color:#4a4035;
+    align-items:flex-start;
+  }
+  .intel .bit i {
+    font-style:normal; flex-shrink:0; width:16px; text-align:center;
+    color:var(--rust); font-weight:700;
+  }
+  .heads-up .bit i { color:var(--rust-deep); }
+
+  /* ---- gap callout ---- */
+  .gap {
+    margin:48px 0 10px; border:2px dashed var(--ink);
+    padding:30px 32px; background:rgba(217,154,43,0.08);
+  }
+  .gap .kicker { color:var(--rust-deep); margin-bottom:10px; }
+  .gap h2 {
+    font-family:'Fraunces',serif; font-weight:600; font-size:1.7rem;
+    margin-bottom:10px;
+  }
+  .gap p { font-size:0.95rem; color:#3f352b; max-width:680px; }
+
+  /* ---- footer ---- */
+  footer {
+    margin-top:54px; border-top:2px solid var(--ink);
+    padding:32px 0 70px; font-size:0.82rem; color:#6b5d4d;
+  }
+  footer b { color:var(--ink); }
+  .legend { display:flex; flex-wrap:wrap; gap:16px; margin-top:14px; }
+  .legend span { display:flex; align-items:center; gap:6px; font-weight:600; }
+  .dot { width:11px; height:11px; border-radius:2px; }
+
+  .empty {
+    display:none; text-align:center; padding:60px 0;
+    font-family:'Fraunces',serif; font-style:italic;
+    font-size:1.3rem; color:#8a7a64;
+  }
+  .empty.show { display:block; }
+
+  @media (max-width:760px) {
+    .grid { grid-template-columns:1fr; }
+    header { padding:44px 0 30px; }
+    .controls .wrap { gap:6px; }
+    .ctl-label { width:100%; margin-bottom:4px; }
+    .cluster { padding:36px 0 4px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="kicker">Holiday Manifesto 2026 · Field Notes</div>
+    <h1>Lisbon, <em>vetted.</em></h1>
+    <p class="sub">Eight recommendations from Adam's list — researched, sorted by neighbourhood, and pressure-tested against the brief. Filter by what you're after.</p>
+    <div class="meta-row">
+      <span><b>4</b> nights</span>
+      <span><b>Thu</b>&ndash;<b>Mon</b></span>
+      <span><b>21&ndash;35</b> crowd</span>
+      <span>£600&ndash;800 <b>cap</b></span>
+      <span>No tours · <b>no tat</b></span>
+    </div>
+  </div>
+</header>
+
+<div class="controls">
+  <div class="wrap">
+    <span class="ctl-label">Show me</span>
+    <button class="chip active" data-filter="all">Everything</button>
+    <button class="chip" data-filter="day">Day drinking</button>
+    <button class="chip" data-filter="nightlife">Nightlife</button>
+    <button class="chip" data-filter="food">Food</button>
+    <button class="chip" data-filter="view">Views &amp; chill</button>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- CLUSTER 1 -->
+  <section class="cluster">
+    <div class="cluster-head">
+      <span class="cluster-num">01</span>
+      <h2>The Cais do Sodré run</h2>
+    </div>
+    <p class="cluster-note">
+      Three of Adam's picks sit within a few minutes of each other — this is one complete evening arc: sunset drinks, food, then the late session.
+      <span class="walk">↔ All walkable, &lt;5 min between each</span>
+    </p>
+    <div class="grid">
+
+      <article class="card" data-cat="view nightlife">
+        <div class="card-top">
+          <div>
+            <h3>Javá Rooftop</h3>
+            <div class="where">Cais do Sodré · atop 8Building</div>
+          </div>
+          <div class="tags"><span class="tag view">View</span><span class="tag nightlife">Pre-night</span></div>
+        </div>
+        <p class="blurb">Adam's "best in the world." The only rooftop in Cais do Sodré with views down over the Ribeira Market and the Tagus — chic, velvet-and-marble interior, playful cocktail list with their own takes on a Pisco Sour.</p>
+        <div class="fit">
+          <b>Where it fits</b>
+          <span>Sunset pre-drinks before dinner. The whole evening starts here.</span>
+        </div>
+        <div class="intel heads-up">
+          <div class="bit"><i>!</i><span>Reservation needed — especially for the prime balcony spots. Book for the group ahead.</span></div>
+          <div class="bit"><i>→</i><span>Find the panoramic elevator inside the building to reach the top floor.</span></div>
+        </div>
+      </article>
+
+      <article class="card" data-cat="food day">
+        <div class="card-top">
+          <div>
+            <h3>Time Out Market</h3>
+            <div class="where">Cais do Sodré · Mercado da Ribeira</div>
+          </div>
+          <div class="tags"><span class="tag food">Food</span><span class="tag day">Casual</span></div>
+        </div>
+        <p class="blurb">Curated food hall — 26 chef-run stalls (some Michelin-pedigree) plus 8 bars, at well below restaurant prices. Great for a group because there's something for everyone. But it's a food hall, not a taverna.</p>
+        <div class="fit">
+          <b>Where it fits</b>
+          <span>Casual lunch, or a low-stakes first-night dinner. Not your "authentic taverna" night.</span>
+        </div>
+        <div class="intel heads-up">
+          <div class="bit"><i>!</i><span>Rammed on evenings/weekends; communal seating is competitive. Go weekday before 1pm or after 8pm.</span></div>
+          <div class="bit"><i>→</i><span>Group tactic: one person claims a table on entry while the rest queue.</span></div>
+        </div>
+      </article>
+
+      <article class="card" data-cat="nightlife">
+        <div class="card-top">
+          <div>
+            <h3>Pink Street</h3>
+            <div class="where">Cais do Sodré · Rua Nova do Carvalho</div>
+          </div>
+          <div class="tags"><span class="tag nightlife">Nightlife</span></div>
+        </div>
+        <p class="blurb">The pink-painted former red-light strip, now a trendy bar-and-club run. Buzzing, music-led, crowd mostly in their 20s&ndash;30s. Bars roll into clubs around 1am and run late. Standout: Pensão Amor, a former brothel that kept its decor.</p>
+        <div class="fit">
+          <b>Where it fits</b>
+          <span>Your late-session anchor — midnight to 2am, when the energy steps up.</span>
+        </div>
+        <div class="intel heads-up">
+          <div class="bit"><i>!</i><span>Bars swing from dead to overcrowded fast — timing matters. Prices run higher than Bairro Alto.</span></div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- CLUSTER 2 -->
+  <section class="cluster">
+    <div class="cluster-head">
+      <span class="cluster-num">02</span>
+      <h2>On your doorstep</h2>
+    </div>
+    <p class="cluster-note">
+      Bairro Alto is your base — this one's the easy default you'll keep coming back to.
+      <span class="walk">↔ Walk from the apartment</span>
+    </p>
+    <div class="grid">
+
+      <article class="card" data-cat="day nightlife view">
+        <div class="card-top">
+          <div>
+            <h3>Park Rooftop Bar</h3>
+            <div class="where">Bairro Alto · atop a car park</div>
+          </div>
+          <div class="tags"><span class="tag day">Day</span><span class="tag nightlife">Night</span></div>
+        </div>
+        <p class="blurb">Garden terrace on the 6th floor of a working car park — river and Santa Catarina bell-tower views, the most popular bar in Bairro Alto since 2013. Reasonably priced for a rooftop. Open from 1pm; switches to a DJ party bar late.</p>
+        <div class="fit">
+          <b>Where it fits</b>
+          <span>Double-duty: afternoon day-drinking <em>and</em> a pre-club warm-up. Your reliable default.</span>
+        </div>
+        <div class="intel heads-up">
+          <div class="bit"><i>!</i><span>No reservations. Gets very busy — seating runs out, so arrive ahead of sunset.</span></div>
+          <div class="bit"><i>→</i><span>Entrance is through the car park — take the lift up, then stairs to the roof.</span></div>
+        </div>
+      </article>
+
+      <article class="card" data-cat="food day">
+        <div class="card-top">
+          <div>
+            <h3>Dear Breakfast</h3>
+            <div class="where">Bica location · closest to base</div>
+          </div>
+          <div class="tags"><span class="tag food">Brunch</span><span class="tag day">Recovery</span></div>
+        </div>
+        <p class="blurb">Repeatedly called Lisbon's best brunch — design-led, egg-centric, proper coffee, open all day from 9am. The ~€20 set menu includes a brunch cocktail with refills, coffee, pastry, granola and a main. Excellent value and genuinely huge portions.</p>
+        <div class="fit">
+          <b>Where it fits</b>
+          <span>Morning recovery — exactly the "morning recovery" line in the brief.</span>
+        </div>
+        <div class="intel heads-up">
+          <div class="bit"><i>!</i><span>Waits hit 1.5 hrs at peak. Book ahead or roll in at 9am opening — easier with 7 of you.</span></div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- CLUSTER 3 -->
+  <section class="cluster">
+    <div class="cluster-head">
+      <span class="cluster-num">03</span>
+      <h2>The Alfama amble</h2>
+    </div>
+    <p class="cluster-note">
+      Two picks (plus a correction) that fold into one relaxed day of zero-forced-fun exploring — the oldest part of the city.
+      <span class="walk">↔ One easy morning-into-afternoon loop</span>
+    </p>
+    <div class="grid">
+
+      <article class="card" data-cat="view day">
+        <div class="card-top">
+          <div>
+            <h3>Bar Terraço de Santa Luzia</h3>
+            <div class="where">Alfama · beside the miradouro</div>
+          </div>
+          <div class="tags"><span class="tag view">View</span><span class="tag day">Chill</span></div>
+        </div>
+        <p class="blurb">Small terrace bar tucked beside the Santa Luzia viewpoint — panoramic Alfama-and-Tagus views, peaceful, with sangria, cocktails and Porto Tónico that reviewers rate as good value for the setting.</p>
+        <div class="fit">
+          <b>Where it fits</b>
+          <span>A chilled afternoon drink mid-amble. Relaxed, not a party stop.</span>
+        </div>
+        <div class="intel heads-up">
+          <div class="bit"><i>!</i><span>Cash only — come prepared.</span></div>
+        </div>
+      </article>
+
+      <article class="card" data-cat="day view">
+        <div class="card-top">
+          <div>
+            <h3>The Alfama Walk</h3>
+            <div class="where">Alfama · riverfront + old town</div>
+          </div>
+          <div class="tags"><span class="tag day">Explore</span><span class="tag view">Scenic</span></div>
+        </div>
+        <p class="blurb"><b>Quick correction:</b> Alfama has no beach. Adam's likely mixing the <em>Alfama walk</em> (maze of alleys, viewpoints, Fado bars up to the castle) with the <em>Ribeira das Naus</em> riverfront promenade at water level near Cais do Sodré. Real beaches need a train toward Cascais.</p>
+        <div class="fit">
+          <b>Where it fits</b>
+          <span>The "just exploring" part of the brief. Pair with Santa Luzia + a Dear Breakfast Alfama start.</span>
+        </div>
+        <div class="intel">
+          <div class="bit"><i>→</i><span>Riverfront stroll: the Ribeira das Naus promenade starts steps from Cais do Sodré station.</span></div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- CLUSTER 4 -->
+  <section class="cluster">
+    <div class="cluster-head">
+      <span class="cluster-num">04</span>
+      <h2>Short hop out</h2>
+    </div>
+    <p class="cluster-note">
+      One standalone afternoon, a quick taxi or train from the centre.
+      <span class="walk">↔ ~10 min taxi / 4 min train (Alcântara-Mar)</span>
+    </p>
+    <div class="grid">
+
+      <article class="card" data-cat="day food">
+        <div class="card-top">
+          <div>
+            <h3>LX Factory</h3>
+            <div class="where">Alcântara · under the 25 de Abril bridge</div>
+          </div>
+          <div class="tags"><span class="tag day">Day drinking</span><span class="tag food">Food</span></div>
+        </div>
+        <p class="blurb">Former textile complex turned creative village — 50+ shops, bars and restaurants in an industrial setting with street art. The on-brief bit: most spots run happy hour from ~2pm to 8pm — think €5 Aperol spritz, €1.50 beers.</p>
+        <div class="fit">
+          <b>Where it fits</b>
+          <span>An afternoon day-drinking session — wander, terraces, cheap rounds.</span>
+        </div>
+        <div class="intel heads-up">
+          <div class="bit"><i>!</i><span>Can feel touristy; authentic Portuguese food is in the minority (more Mexican/Italian/fusion).</span></div>
+          <div class="bit"><i>→</i><span>Skip the Sunday market unless you actively want the crowds.</span></div>
+        </div>
+      </article>
+
+      <article class="card" data-cat="food" style="background:rgba(92,96,66,0.08); border-style:dashed;">
+        <div class="card-top">
+          <div>
+            <h3>The missing piece</h3>
+            <div class="where">Recommendation gap</div>
+          </div>
+          <div class="tags"><span class="tag food">To source</span></div>
+        </div>
+        <p class="blurb">Adam's list is strong on rooftops, day-drinking and walkable nightlife — well aligned with the manifesto. But nothing on it is an <b>authentic taverna for a big group dinner</b>, which the brief specifically wants. Time Out Market is the closest, and it isn't really that.</p>
+        <div class="fit" style="border-color:var(--olive); background:rgba(92,96,66,0.06);">
+          <b style="color:var(--olive);">Next step</b>
+          <span>Slot in 1&ndash;2 proper Portuguese group restaurants near Bairro Alto.</span>
+        </div>
+        <div class="intel">
+          <div class="bit"><i>→</i><span>Want me to research taverna options? Then I can lay the whole trip out night-by-night.</span></div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <div class="empty">Nothing in that category — try another filter.</div>
+
+  <!-- GAP / SUMMARY -->
+  <section class="gap">
+    <div class="kicker">The verdict</div>
+    <h2>A well-aligned list — with one job left</h2>
+    <p>Adam's picks are heavy on exactly what the manifesto asks for: rooftops, casual day-drinking, walkable nightlife, and zero boat tours or tat. The geography sorts cleanly into four clusters, so the trip almost plans itself. The single genuine gap is a proper group dinner — lock in a taverna or two and the food side is as sorted as the drinking side.</p>
+  </section>
+
+  <footer>
+    <b>Lisbon 2026</b> — recommendations researched &amp; sorted against the Holiday Manifesto.
+    <div class="legend">
+      <span><span class="dot" style="background:var(--gold);"></span>Day drinking</span>
+      <span><span class="dot" style="background:var(--rust);"></span>Nightlife</span>
+      <span><span class="dot" style="background:var(--olive);"></span>Food</span>
+      <span><span class="dot" style="background:var(--tile);"></span>Views &amp; chill</span>
+    </div>
+  </footer>
+
+</div>
+
+<script>
+  const chips = document.querySelectorAll('.chip');
+  const cards = document.querySelectorAll('.card[data-cat]');
+  const clusters = document.querySelectorAll('.cluster');
+  const empty = document.querySelector('.empty');
+
+  chips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      chips.forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      const f = chip.dataset.filter;
+      let anyVisible = false;
+
+      cards.forEach(card => {
+        const cats = card.dataset.cat.split(' ');
+        const show = (f === 'all') || cats.includes(f);
+        card.classList.toggle('hide', !show);
+        if (show) anyVisible = true;
+      });
+
+      // hide a cluster entirely if none of its cards are visible
+      clusters.forEach(cl => {
+        const visible = cl.querySelectorAll('.card[data-cat]:not(.hide)').length;
+        cl.style.display = visible ? '' : 'none';
+      });
+
+      empty.classList.toggle('show', !anyVisible);
+    });
+  });
+</script>
+
+</body>
+</html>
