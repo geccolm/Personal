@@ -21,6 +21,7 @@
     --shadow:0 16px 40px rgba(20,40,32,.12);
   }
   html.light header{ background:linear-gradient(180deg,rgba(255,255,255,.92),rgba(255,255,255,.62)) }
+  html.light .bar .logo{ filter:brightness(0) saturate(100%); opacity:.85 }
   html.light body::before{ opacity:.045 }
   html.light body::after{ opacity:.02 }
   /* light-mode contrast fixes for coloured chips/text */
@@ -29,10 +30,14 @@
   html.light .ev.og{ background:rgba(93,114,105,.14); color:#3c4d44; border-color:var(--line) }
   html.light .ev.pen{ background:rgba(12,159,90,.12); color:#076b3c; border-color:var(--green-dim) }
   html.light .scope.full{ background:rgba(176,125,18,.16) }
-  .theme-btn{cursor:pointer; background:var(--panel); border:1px solid var(--line); color:var(--muted);
-    font-size:12px; font-weight:700; letter-spacing:.4px; padding:7px 12px; border-radius:999px;
-    display:inline-flex; align-items:center; gap:6px; line-height:1; transition:color .18s,border-color .18s}
-  .theme-btn:hover{color:var(--ink); border-color:var(--green-dim)}
+  .theme-toggle{cursor:pointer; background:var(--panel); border:1px solid var(--line); border-radius:999px;
+    padding:6px 11px; display:inline-flex; align-items:center; gap:8px; line-height:1; transition:border-color .18s}
+  .theme-toggle:hover{border-color:var(--green-dim)}
+  .theme-toggle .tt-ico{font-size:14px; line-height:1}
+  .theme-toggle .tt-track{position:relative; width:40px; height:20px; border-radius:999px; background:var(--line); transition:background .2s}
+  .theme-toggle .tt-knob{position:absolute; top:2px; left:2px; width:16px; height:16px; border-radius:50%; background:var(--green); transition:transform .2s; box-shadow:0 1px 3px rgba(0,0,0,.4)}
+  html.light .theme-toggle .tt-track{background:var(--green-dim)}
+  html.light .theme-toggle .tt-knob{transform:translateX(20px)}
   *{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
   body{
@@ -105,10 +110,10 @@
     text-transform:uppercase; padding:4px 7px; border-radius:6px}
   .scope.group{background:rgba(19,217,122,.12); color:var(--green)}
   .scope.full{background:rgba(242,193,78,.14); color:var(--gold)}
-  .bet h3{font-size:14.5px; font-weight:800; padding-right:74px; margin-bottom:2px; letter-spacing:.2px}
-  .bet .bet-desc{font-size:11px; color:var(--muted); margin-bottom:12px; line-height:1.3}
-  .bet .leadteam{font-family:"Archivo Black",sans-serif; font-size:20px; line-height:1.1}
-  .bet .leadowner{font-size:13px; color:var(--muted); margin-top:4px; font-weight:600}
+  .bet h3{font-size:17px; font-weight:800; padding-right:74px; margin-bottom:3px; letter-spacing:.2px}
+  .bet .bet-desc{font-size:13px; color:var(--muted); margin-bottom:14px; line-height:1.3}
+  .bet .leadteam{font-family:"Archivo Black",sans-serif; font-size:21px; line-height:1.1}
+  .bet .leadowner{font-size:14.5px; color:var(--muted); margin-top:5px; font-weight:600}
   .bet .leadowner b{color:var(--green)}
   .bet .val{position:absolute; bottom:14px; right:16px; font-family:"Anton"; font-size:30px; color:var(--ink); opacity:.85}
   .matchday{margin-top:22px}
@@ -119,13 +124,13 @@
   .md-head .md-pill{margin-left:auto; font-size:10px; font-weight:800; padding:4px 9px; border-radius:999px;
     background:rgba(19,217,122,.10); color:var(--green); border:1px solid var(--green-dim); letter-spacing:.8px}
   .scores{display:grid; grid-template-columns:repeat(2,1fr); gap:10px}
-  .score{display:grid; grid-template-columns:60px 1fr auto 1fr; align-items:center; gap:12px;
+  .score{display:grid; grid-template-columns:1fr auto 1fr; align-items:center; gap:12px;
     background:linear-gradient(180deg,var(--panel),var(--panel2));
     border:1px solid var(--line); border-radius:12px; padding:14px 16px; position:relative; overflow:hidden;
     transition:border-color .18s ease, transform .18s ease}
   .score:hover{border-color:var(--green-dim); transform:translateY(-2px)}
   .score::before{content:""; position:absolute; left:0; top:0; bottom:0; width:3px; background:var(--green-dim); opacity:.7}
-  .score .gp{font-size:10px; font-weight:800; color:var(--muted); letter-spacing:.8px; text-transform:uppercase}
+  .score .gp{grid-column:1/-1; text-align:center; font-size:10px; font-weight:800; color:var(--muted); letter-spacing:.8px; text-transform:uppercase}
   .score .home{font-weight:800; font-size:15px; text-align:right}
   .score .away{font-weight:800; font-size:15px; text-align:left}
   .score .sc{font-family:"Anton"; font-size:26px; letter-spacing:1px; min-width:74px; text-align:center;
@@ -177,9 +182,9 @@
   .trk-legend span{display:inline-flex; align-items:center; gap:5px}
   .trk-legend i{width:10px; height:10px; border-radius:2px; display:inline-block; background:rgba(19,217,122,.35); border:1px solid var(--green-dim)}
   .trk-wrap{background:var(--panel); border:1px solid var(--line); border-radius:14px; overflow-x:auto; -webkit-overflow-scrolling:touch}
-  .trk-table{width:100%; border-collapse:collapse; font-size:13px}
+  .trk-table{width:100%; border-collapse:collapse; font-size:14px}
   .trk-table thead th{background:linear-gradient(180deg,var(--panel2),var(--panel)); color:var(--muted); font-weight:800;
-    text-transform:uppercase; letter-spacing:1px; font-size:10.5px; padding:12px 10px; text-align:left; border-bottom:1px solid var(--line);
+    text-transform:uppercase; letter-spacing:.8px; font-size:12px; padding:12px 9px; text-align:left; border-bottom:1px solid var(--line);
     cursor:pointer; user-select:none; position:sticky; top:0; transition:color .18s; white-space:nowrap}
   .trk-table thead th:hover{color:var(--ink)}
   .trk-table thead th.sorted{color:var(--green)}
@@ -190,10 +195,10 @@
   .trk-table tbody tr:last-child td{border-bottom:none}
   .trk-table tbody tr{transition:background .14s}
   .trk-table tbody tr:hover{background:rgba(19,217,122,.04)}
-  .trk-team{font-family:"Archivo Black",sans-serif; font-size:13.5px}
-  .trk-group{font-size:10px; font-weight:800; color:#0a120f; background:var(--muted); border-radius:4px; padding:3px 6px; min-width:22px;
+  .trk-team{font-family:"Archivo Black",sans-serif; font-size:15px}
+  .trk-group{font-size:11px; font-weight:800; color:#0a120f; background:var(--muted); border-radius:4px; padding:3px 6px; min-width:22px;
     display:inline-block; text-align:center}
-  .trk-owner{color:var(--gold); font-weight:700; font-size:12px}
+  .trk-owner{color:var(--gold); font-weight:700; font-size:13.5px}
   .trk-owner.none{color:var(--muted); opacity:.5}
   .trk-num{text-align:center; font-variant-numeric:tabular-nums; font-weight:700}
   .trk-num.zero{color:var(--muted); opacity:.4}
@@ -207,35 +212,35 @@
   .lb-toggle button{background:transparent; border:none; color:var(--muted); font-family:"Anton"; letter-spacing:1px;
     text-transform:uppercase; font-size:12px; padding:8px 16px; cursor:pointer; border-radius:7px; transition:all .18s}
   .lb-toggle button.active{background:var(--green-dim); color:var(--ink)}
-  .lb-meta{margin-left:auto; font-size:11px; color:var(--muted); letter-spacing:1px; text-transform:uppercase; font-weight:700}
+  .lb-meta{margin-left:auto; font-size:12.5px; color:var(--muted); letter-spacing:1px; text-transform:uppercase; font-weight:700}
   .lb-grid{display:grid; grid-template-columns:1.6fr 1fr; gap:18px}
   .lb-chart{background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:18px; position:relative; min-height:460px}
   .lb-chart canvas{max-height:480px}
   .lb-rank{background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:18px 18px 8px}
-  .lb-rank h3{font-family:"Anton"; font-weight:400; text-transform:uppercase; font-size:18px; letter-spacing:1px; margin-bottom:14px;
+  .lb-rank h3{font-family:"Anton"; font-weight:400; text-transform:uppercase; font-size:21px; letter-spacing:1px; margin-bottom:14px;
     display:flex; align-items:center; gap:10px}
   .lb-rank h3 .meta{font-size:10px; color:var(--muted); letter-spacing:1.2px; font-family:"Hanken Grotesk"; font-weight:700; margin-left:auto}
   .lb-row{display:grid; grid-template-columns:32px 1fr auto; align-items:center; gap:10px; padding:9px 0; border-bottom:1px solid rgba(29,58,48,.4)}
   .lb-row:last-child{border-bottom:none}
-  .lb-row .pos{font-family:"Anton"; font-size:18px; color:var(--muted); text-align:center}
+  .lb-row .pos{font-family:"Anton"; font-size:21px; color:var(--muted); text-align:center}
   .lb-row.gold .pos{color:var(--gold)}
   .lb-row.silver .pos{color:#cfd6d2}
   .lb-row.bronze .pos{color:#c89c5b}
-  .lb-row .nm{font-family:"Archivo Black"; font-size:14px; display:flex; align-items:center; gap:8px}
-  .lb-row .swatch{width:12px; height:12px; border-radius:3px; flex-shrink:0}
-  .lb-row .v{font-family:"Anton"; font-size:18px; color:var(--ink)}
+  .lb-row .nm{font-family:"Archivo Black"; font-size:15.5px; display:flex; align-items:center; gap:8px}
+  .lb-row .swatch{width:13px; height:13px; border-radius:3px; flex-shrink:0}
+  .lb-row .v{font-family:"Anton"; font-size:21px; color:var(--ink)}
   .lb-row.gold .v{color:var(--gold)}
-  .lb-row .bets{font-size:10px; color:var(--muted); letter-spacing:.5px; margin-top:2px}
-  .lb-note{margin-top:14px; font-size:12px; color:var(--muted); line-height:1.6}
+  .lb-row .bets{font-size:12px; color:var(--muted); letter-spacing:.3px; margin-top:3px}
+  .lb-note{margin-top:14px; font-size:13.5px; color:var(--muted); line-height:1.6}
   .lb-note b{color:var(--ink)}
   @media(max-width:860px){
     .lb-grid{grid-template-columns:1fr} .lb-chart{min-height:380px}
   }
   .trk-summary{margin-top:18px; display:grid; grid-template-columns:repeat(4,1fr); gap:10px}
   .trk-card{background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:14px}
-  .trk-card .lbl{font-size:10px; color:var(--muted); letter-spacing:1.2px; text-transform:uppercase; font-weight:800}
-  .trk-card .v{font-family:"Anton"; font-size:22px; margin-top:4px}
-  .trk-card .o{font-size:11px; color:var(--gold); font-weight:700; margin-top:2px}
+  .trk-card .lbl{font-size:11.5px; color:var(--muted); letter-spacing:1px; text-transform:uppercase; font-weight:800}
+  .trk-card .v{font-family:"Anton"; font-size:23px; margin-top:5px}
+  .trk-card .o{font-size:12.5px; color:var(--gold); font-weight:700; margin-top:3px}
   @media(max-width:860px){
     .trk-table{font-size:11px} .trk-table thead th{padding:10px 6px}
     .trk-table tbody td{padding:8px 6px}
@@ -284,7 +289,11 @@
     <div class="spacer"></div>
     <div class="chip" id="potChip">POT &pound;200</div>
     <div class="chip live" id="updChip">UPDATING</div>
-    <button class="theme-btn" id="themeBtn" type="button" aria-label="Toggle light and dark mode" aria-pressed="false">🌙 Dark</button>
+    <button class="theme-toggle" id="themeBtn" type="button" role="switch" aria-checked="false" aria-label="Toggle light and dark mode">
+      <span class="tt-ico">🌙</span>
+      <span class="tt-track"><span class="tt-knob"></span></span>
+      <span class="tt-ico">☀️</span>
+    </button>
   </div>
 </header>
 <div class="wrap">
@@ -337,29 +346,29 @@
           <thead>
             <tr>
               <th data-sort="team">Team</th>
-              <th data-sort="group">Grp</th>
+              <th data-sort="group" title="Group">Grp</th>
               <th data-sort="owner">Punter</th>
-              <th class="numeric" data-sort="played" data-numeric="1">P</th>
-              <th class="numeric" data-sort="yc" data-numeric="1">YC</th>
-              <th class="numeric" data-sort="rc" data-numeric="1">RC</th>
-              <th class="numeric" data-sort="og" data-numeric="1">OG</th>
-              <th class="numeric" data-sort="pen" data-numeric="1">PEN</th>
-              <th class="numeric" data-sort="gs" data-numeric="1">GF</th>
-              <th class="numeric" data-sort="gc" data-numeric="1">GA</th>
-              <th class="numeric" data-sort="gd" data-numeric="1">GD</th>
-              <th class="numeric" data-sort="co" data-numeric="1">CK</th>
-              <th class="numeric" data-sort="fo" data-numeric="1">FL</th>
-              <th class="numeric" data-sort="cs" data-numeric="1">CS</th>
-              <th class="numeric" data-sort="hg" data-numeric="1">HG</th>
-              <th class="numeric" data-sort="sg" data-numeric="1">SG</th>
-              <th class="numeric" data-sort="sfd" data-numeric="1">SHF</th>
-              <th class="numeric" data-sort="pos" data-numeric="1">POS</th>
+              <th class="numeric" data-sort="played" data-numeric="1" title="Played">P</th>
+              <th class="numeric" data-sort="yc" data-numeric="1" title="Yellow cards">YC</th>
+              <th class="numeric" data-sort="rc" data-numeric="1" title="Red cards">RC</th>
+              <th class="numeric" data-sort="og" data-numeric="1" title="Own goals">OG</th>
+              <th class="numeric" data-sort="pen" data-numeric="1" title="Penalties conceded">PEN</th>
+              <th class="numeric" data-sort="gs" data-numeric="1" title="Goals for">GF</th>
+              <th class="numeric" data-sort="gc" data-numeric="1" title="Goals against">GA</th>
+              <th class="numeric" data-sort="gd" data-numeric="1" title="Goal difference">GD</th>
+              <th class="numeric" data-sort="co" data-numeric="1" title="Corners won">CK</th>
+              <th class="numeric" data-sort="fo" data-numeric="1" title="Fouls committed">FL</th>
+              <th class="numeric" data-sort="cs" data-numeric="1" title="Clean sheets">CS</th>
+              <th class="numeric" data-sort="hg" data-numeric="1" title="Headed goals">HG</th>
+              <th class="numeric" data-sort="sg" data-numeric="1" title="Substitute goals">SG</th>
+              <th class="numeric" data-sort="sfd" data-numeric="1" title="Shots faced">SHF</th>
+              <th class="numeric" data-sort="pos" data-numeric="1" title="Average possession %">POS</th>
             </tr>
           </thead>
           <tbody id="trkBody"></tbody>
         </table>
       </div>
-      <div style="margin-top:14px; font-size:12px; color:var(--muted)">
+      <div style="margin-top:14px; font-size:13.5px; color:var(--muted); line-height:1.7">
         Star marks the current side-bet leader in that column. Key: P played, YC yellows, RC reds, OG own goals, PEN penalties conceded, GF goals for, GA goals against, GD goal difference, CK corners, FL fouls, CS clean sheets, HG headed goals, SG sub goals, SHF shots faced, POS avg possession.
       </div>
     </section>
@@ -385,7 +394,6 @@
   </div>
   <footer>
     <div>Drawn live on the randomiser &middot; screen recorded &middot; no fixing.</div>
-    <div>Run by <b>Leo</b> &middot; complaints to the group chat</div>
   </footer>
 </div>
 <script>
@@ -428,6 +436,54 @@ const DATA = {
   // Schedule prepends each day's matches to the top of this array. Newest batch first.
   recentScores: [
     // Match results, newest batch first.
+    { date:"27 Jun 2026", group:"Group K", home:"Portugal", hs:3, away:"DR Congo", as:1, yh:2, ya:0, rh:0, ra:0, oh:0, oa:0, ph:1, pa:0, ch:6, ca:7, foh:18, foa:11, poh:52, poa:48, hgh:3, hga:1, sgh:1, sga:1, shh:21, sha:7, fg:{m:33,t:"Portugal"} },
+    { date:"27 Jun 2026", group:"Group K", home:"Uzbekistan", hs:1, away:"Colombia", as:1, yh:3, ya:2, rh:1, ra:0, oh:0, oa:0, ph:0, pa:0, ch:6, ca:4, foh:16, foa:12, poh:38, poa:62, hgh:0, hga:0, sgh:0, sga:0, shh:10, sha:7, fg:{m:8,t:"Uzbekistan"} },
+    { date:"27 Jun 2026", group:"Group L", home:"Panama", hs:4, away:"Ghana", as:2, yh:4, ya:1, rh:0, ra:0, oh:0, oa:0, ph:0, pa:0, ch:2, ca:1, foh:11, foa:14, poh:67, poa:33, hgh:0, hga:0, sgh:1, sga:0, shh:18, sha:18, fg:{m:50,t:"Ghana"} },
+    { date:"27 Jun 2026", group:"Group L", home:"Croatia", hs:4, away:"England", as:2, yh:1, ya:3, rh:0, ra:0, oh:0, oa:0, ph:0, pa:0, ch:5, ca:8, foh:14, foa:10, poh:56, poa:44, hgh:2, hga:0, sgh:0, sga:1, shh:17, sha:5, fg:{m:53,t:"Croatia"} },
+    { date:"26 Jun 2026", group:"Group I", home:"France", hs:1, away:"Senegal", as:3, yh:3, ya:2, rh:0, ra:0, oh:0, oa:0, ph:1, pa:1, ch:8, ca:6, foh:16, foa:11, poh:41, poa:59, hgh:0, hga:0, sgh:1, sga:0, shh:6, sha:12, fg:{m:76,t:"France"} },
+    { date:"26 Jun 2026", group:"Group I", home:"Iraq", hs:3, away:"Norway", as:4, yh:3, ya:2, rh:0, ra:0, oh:0, oa:0, ph:1, pa:0, ch:7, ca:6, foh:17, foa:8, poh:58, poa:42, hgh:1, hga:2, sgh:0, sga:0, shh:18, sha:5, fg:{m:61,t:"Iraq"}, cb:{t:"Norway",d:2} },
+    { date:"26 Jun 2026", group:"Group J", home:"Algeria", hs:4, away:"Jordan", as:1, yh:0, ya:2, rh:0, ra:0, oh:0, oa:0, ph:0, pa:1, ch:6, ca:8, foh:9, foa:14, poh:65, poa:35, hgh:4, hga:1, sgh:1, sga:0, shh:18, sha:18, fg:{m:44,t:"Jordan"} },
+    { date:"26 Jun 2026", group:"Group J", home:"Argentina", hs:1, away:"Austria", as:2, yh:3, ya:0, rh:0, ra:0, oh:0, oa:0, ph:0, pa:0, ch:4, ca:8, foh:7, foa:9, poh:45, poa:55, hgh:1, hga:0, sgh:0, sga:0, shh:22, sha:18, fg:{m:4,t:"Austria"} },
+    { date:"25 Jun 2026", group:"Group G", home:"Egypt", hs:1, away:"New Zealand", as:0, yh:1, ya:2, rh:0, ra:1, oh:0, oa:0, ph:0, pa:0, ch:5, ca:2, foh:16, foa:18, poh:62, poa:38, hgh:0, hga:0, sgh:1, sga:0, shh:15, sha:7, fg:{m:75,t:"Egypt"} },
+    { date:"25 Jun 2026", group:"Group G", home:"Belgium", hs:2, away:"Iran", as:2, yh:4, ya:2, rh:1, ra:0, oh:0, oa:0, ph:0, pa:0, ch:9, ca:3, foh:13, foa:9, poh:40, poa:60, hgh:2, hga:2, sgh:0, sga:1, shh:21, sha:18, fg:{m:58,t:"Iran"} },
+    { date:"25 Jun 2026", group:"Group H", home:"Cape Verde", hs:1, away:"Spain", as:2, yh:4, ya:1, rh:0, ra:0, oh:0, oa:0, ph:0, pa:0, ch:3, ca:4, foh:11, foa:10, poh:41, poa:59, hgh:1, hga:0, sgh:1, sga:0, shh:10, sha:12, fg:{m:8,t:"Spain"} },
+    { date:"25 Jun 2026", group:"Group H", home:"Uruguay", hs:1, away:"Saudi Arabia", as:3, yh:0, ya:4, rh:0, ra:0, oh:0, oa:0, ph:0, pa:0, ch:3, ca:2, foh:13, foa:14, poh:41, poa:59, hgh:0, hga:0, sgh:1, sga:0, shh:15, sha:6, fg:{m:34,t:"Uruguay"} },
+    { date:"24 Jun 2026", group:"Group E", home:"Ecuador", hs:4, away:"Ivory Coast", as:1, yh:3, ya:0, rh:0, ra:0, oh:0, oa:0, ph:0, pa:0, ch:10, ca:5, foh:17, foa:13, poh:49, poa:51, hgh:2, hga:1, sgh:0, sga:0, shh:12, sha:17, fg:{m:51,t:"Ivory Coast"} },
+    { date:"24 Jun 2026", group:"Group E", home:"Curacao", hs:1, away:"Germany", as:2, yh:0, ya:2, rh:0, ra:0, oh:0, oa:0, ph:0, pa:0, ch:5, ca:9, foh:14, foa:18, poh:55, poa:45, hgh:0, hga:2, sgh:1, sga:0, shh:16, sha:6, fg:{m:33,t:"Germany"} },
+    { date:"24 Jun 2026", group:"Group F", home:"Japan", hs:4, away:"Tunisia", as:3, yh:1, ya:2, rh:0, ra:0, oh:0, oa:0, ph:0, pa:1, ch:4, ca:4, foh:13, foa:18, poh:58, poa:42, hgh:1, hga:1, sgh:1, sga:0, shh:20, sha:17, fg:{m:10,t:"Japan"} },
+    { date:"24 Jun 2026", group:"Group F", home:"Netherlands", hs:0, away:"Sweden", as:2, yh:0, ya:2, rh:0, ra:0, oh:0, oa:0, ph:0, pa:0, ch:5, ca:8, foh:10, foa:11, poh:53, poa:47, hgh:0, hga:1, sgh:0, sga:0, shh:18, sha:14, fg:{m:54,t:"Sweden"} },
+    { date:"23 Jun 2026", group:"Group C", home:"Scotland", hs:3, away:"Haiti", as:1, yh:3, ya:0, rh:0, ra:1, oh:0, oa:0, ph:0, pa:0, ch:10, ca:8, foh:9, foa:10, poh:65, poa:35, hgh:2, hga:0, sgh:0, sga:0, shh:7, sha:14, fg:{m:10,t:"Scotland"} },
+    { date:"23 Jun 2026", group:"Group C", home:"Morocco", hs:4, away:"Brazil", as:1, yh:4, ya:0, rh:0, ra:1, oh:0, oa:0, ph:0, pa:0, ch:5, ca:1, foh:16, foa:8, poh:39, poa:61, hgh:3, hga:1, sgh:0, sga:1, shh:16, sha:11, fg:{m:36,t:"Morocco"} },
+    { date:"23 Jun 2026", group:"Group D", home:"Paraguay", hs:1, away:"Turkey", as:1, yh:3, ya:4, rh:0, ra:0, oh:0, oa:0, ph:0, pa:0, ch:2, ca:6, foh:16, foa:15, poh:61, poa:39, hgh:0, hga:1, sgh:1, sga:1, shh:7, sha:15, fg:{m:29,t:"Turkey"} },
+    { date:"23 Jun 2026", group:"Group D", home:"Australia", hs:0, away:"United States", as:2, yh:4, ya:3, rh:0, ra:0, oh:0, oa:0, ph:0, pa:0, ch:4, ca:7, foh:7, foa:9, poh:62, poa:38, hgh:0, hga:2, sgh:0, sga:0, shh:19, sha:11, fg:{m:37,t:"United States"} },
+    { date:"22 Jun 2026", group:"Group A", home:"Mexico", hs:2, away:"South Africa", as:0, yh:2, ya:4, rh:0, ra:0, oh:0, oa:0, ph:0, pa:0, ch:3, ca:4, foh:8, foa:13, poh:55, poa:45, hgh:1, hga:0, sgh:0, sga:0, shh:17, sha:9, fg:{m:50,t:"Mexico"} },
+    { date:"22 Jun 2026", group:"Group A", home:"South Korea", hs:1, away:"Czech Republic", as:0, yh:1, ya:4, rh:0, ra:0, oh:0, oa:0, ph:0, pa:0, ch:7, ca:1, foh:10, foa:7, poh:57, poa:43, hgh:1, hga:0, sgh:0, sga:0, shh:8, sha:10, fg:{m:75,t:"South Korea"} },
+    { date:"22 Jun 2026", group:"Group B", home:"Bosnia-Herzegovina", hs:2, away:"Qatar", as:1, yh:4, ya:0, rh:0, ra:0, oh:0, oa:0, ph:0, pa:0, ch:5, ca:1, foh:10, foa:16, poh:55, poa:45, hgh:0, hga:0, sgh:0, sga:0, shh:10, sha:8, fg:{m:63,t:"Qatar"}, lw:{m:94,t:"Bosnia-Herzegovina"} },
+    { date:"22 Jun 2026", group:"Group B", home:"Switzerland", hs:2, away:"Canada", as:1, yh:4, ya:1, rh:0, ra:0, oh:0, oa:0, ph:0, pa:0, ch:5, ca:4, foh:8, foa:12, poh:67, poa:33, hgh:0, hga:0, sgh:0, sga:1, shh:7, sha:11, fg:{m:11,t:"Canada"}, cb:{t:"Switzerland",d:2} },
+    { date:"21 Jun 2026", group:"Group K", home:"Portugal", hs:1, away:"Colombia", as:0, yh:2, ya:2, rh:0, ra:0, oh:0, oa:0, ph:0, pa:0, ch:7, ca:8, foh:15, foa:7, poh:53, poa:47, hgh:0, hga:0, sgh:1, sga:0, shh:15, sha:11, fg:{m:14,t:"Portugal"}, cb:{t:"Portugal",d:2} },
+    { date:"21 Jun 2026", group:"Group K", home:"Uzbekistan", hs:0, away:"DR Congo", as:3, yh:2, ya:0, rh:1, ra:0, oh:0, oa:0, ph:0, pa:0, ch:4, ca:3, foh:9, foa:8, poh:43, poa:57, hgh:0, hga:3, sgh:0, sga:0, shh:13, sha:19, fg:{m:77,t:"DR Congo"}, cb:{t:"DR Congo",d:2} },
+    { date:"21 Jun 2026", group:"Group L", home:"Panama", hs:3, away:"England", as:0, yh:2, ya:1, rh:0, ra:0, oh:0, oa:0, ph:0, pa:0, ch:7, ca:9, foh:15, foa:11, poh:56, poa:44, hgh:1, hga:0, sgh:1, sga:0, shh:21, sha:13, fg:{m:46,t:"Panama"} },
+    { date:"21 Jun 2026", group:"Group L", home:"Croatia", hs:3, away:"Ghana", as:0, yh:1, ya:3, rh:0, ra:0, oh:0, oa:0, ph:1, pa:0, ch:9, ca:6, foh:17, foa:18, poh:42, poa:58, hgh:2, hga:0, sgh:0, sga:0, shh:17, sha:7, fg:{m:32,t:"Croatia"} },
+    { date:"20 Jun 2026", group:"Group I", home:"France", hs:1, away:"Norway", as:4, yh:3, ya:3, rh:0, ra:0, oh:0, oa:0, ph:1, pa:0, ch:3, ca:4, foh:17, foa:10, poh:50, poa:50, hgh:1, hga:0, sgh:1, sga:1, shh:8, sha:9, fg:{m:3,t:"France"} },
+    { date:"20 Jun 2026", group:"Group I", home:"Iraq", hs:3, away:"Senegal", as:1, yh:1, ya:2, rh:0, ra:0, oh:0, oa:0, ph:0, pa:0, ch:5, ca:7, foh:8, foa:15, poh:39, poa:61, hgh:1, hga:0, sgh:0, sga:0, shh:8, sha:5, fg:{m:24,t:"Senegal"} },
+    { date:"20 Jun 2026", group:"Group J", home:"Algeria", hs:2, away:"Austria", as:4, yh:0, ya:4, rh:0, ra:1, oh:0, oa:0, ph:0, pa:0, ch:2, ca:4, foh:11, foa:15, poh:64, poa:36, hgh:0, hga:2, sgh:0, sga:0, shh:9, sha:4, fg:{m:80,t:"Austria"} },
+    { date:"20 Jun 2026", group:"Group J", home:"Argentina", hs:1, away:"Jordan", as:4, yh:4, ya:3, rh:0, ra:0, oh:0, oa:0, ph:0, pa:0, ch:9, ca:5, foh:15, foa:18, poh:38, poa:62, hgh:1, hga:3, sgh:0, sga:0, shh:13, sha:18, fg:{m:73,t:"Argentina"} },
+    { date:"19 Jun 2026", group:"Group G", home:"Egypt", hs:3, away:"Iran", as:1, yh:4, ya:0, rh:0, ra:0, oh:0, oa:0, ph:0, pa:0, ch:4, ca:1, foh:11, foa:13, poh:57, poa:43, hgh:2, hga:0, sgh:0, sga:1, shh:18, sha:12, fg:{m:56,t:"Egypt"}, cb:{t:"Egypt",d:2} },
+    { date:"19 Jun 2026", group:"Group G", home:"Belgium", hs:0, away:"New Zealand", as:4, yh:2, ya:1, rh:0, ra:0, oh:0, oa:0, ph:0, pa:0, ch:2, ca:3, foh:10, foa:9, poh:39, poa:61, hgh:0, hga:3, sgh:0, sga:0, shh:12, sha:18, fg:{m:35,t:"New Zealand"} },
+    { date:"19 Jun 2026", group:"Group H", home:"Cape Verde", hs:1, away:"Saudi Arabia", as:2, yh:1, ya:0, rh:0, ra:0, oh:0, oa:0, ph:0, pa:0, ch:9, ca:6, foh:9, foa:14, poh:65, poa:35, hgh:0, hga:1, sgh:0, sga:1, shh:14, sha:4, fg:{m:69,t:"Saudi Arabia"}, lw:{m:95,t:"Saudi Arabia"} },
+    { date:"19 Jun 2026", group:"Group H", home:"Uruguay", hs:4, away:"Spain", as:1, yh:3, ya:3, rh:0, ra:1, oh:0, oa:0, ph:0, pa:0, ch:7, ca:8, foh:15, foa:15, poh:60, poa:40, hgh:2, hga:1, sgh:0, sga:0, shh:17, sha:18, fg:{m:37,t:"Uruguay"} },
+    { date:"18 Jun 2026", group:"Group E", home:"Ecuador", hs:0, away:"Germany", as:2, yh:0, ya:3, rh:0, ra:0, oh:0, oa:0, ph:0, pa:0, ch:2, ca:4, foh:13, foa:12, poh:65, poa:35, hgh:0, hga:1, sgh:0, sga:0, shh:14, sha:15, fg:{m:68,t:"Germany"} },
+    { date:"18 Jun 2026", group:"Group E", home:"Curacao", hs:4, away:"Ivory Coast", as:2, yh:0, ya:0, rh:0, ra:0, oh:0, oa:0, ph:1, pa:0, ch:7, ca:6, foh:13, foa:16, poh:68, poa:32, hgh:4, hga:0, sgh:1, sga:0, shh:14, sha:5, fg:{m:58,t:"Curacao"} },
+    { date:"18 Jun 2026", group:"Group F", home:"Japan", hs:0, away:"Sweden", as:0, yh:3, ya:4, rh:0, ra:1, oh:0, oa:0, ph:0, pa:0, ch:9, ca:7, foh:10, foa:9, poh:45, poa:55, hgh:0, hga:0, sgh:0, sga:0, shh:6, sha:7 },
+    { date:"18 Jun 2026", group:"Group F", home:"Netherlands", hs:2, away:"Tunisia", as:1, yh:4, ya:3, rh:1, ra:0, oh:0, oa:0, ph:0, pa:0, ch:10, ca:6, foh:14, foa:16, poh:43, poa:57, hgh:2, hga:1, sgh:0, sga:0, shh:11, sha:19, fg:{m:60,t:"Netherlands"} },
+    { date:"17 Jun 2026", group:"Group C", home:"Scotland", hs:1, away:"Brazil", as:1, yh:3, ya:1, rh:0, ra:0, oh:0, oa:0, ph:0, pa:0, ch:8, ca:4, foh:8, foa:8, poh:59, poa:41, hgh:1, hga:1, sgh:0, sga:0, shh:7, sha:7, fg:{m:10,t:"Scotland"} },
+    { date:"17 Jun 2026", group:"Group C", home:"Morocco", hs:2, away:"Haiti", as:0, yh:1, ya:1, rh:0, ra:0, oh:0, oa:0, ph:0, pa:1, ch:10, ca:2, foh:7, foa:17, poh:45, poa:55, hgh:2, hga:0, sgh:0, sga:0, shh:8, sha:11, fg:{m:24,t:"Morocco"} },
+    { date:"17 Jun 2026", group:"Group D", home:"Paraguay", hs:1, away:"United States", as:3, yh:0, ya:0, rh:0, ra:0, oh:0, oa:0, ph:0, pa:0, ch:7, ca:2, foh:10, foa:12, poh:48, poa:52, hgh:1, hga:1, sgh:0, sga:0, shh:15, sha:20, fg:{m:4,t:"United States"} },
+    { date:"17 Jun 2026", group:"Group D", home:"Australia", hs:0, away:"Turkey", as:1, yh:0, ya:0, rh:0, ra:0, oh:0, oa:0, ph:0, pa:0, ch:6, ca:9, foh:14, foa:11, poh:46, poa:54, hgh:0, hga:0, sgh:0, sga:1, shh:19, sha:12, fg:{m:8,t:"Turkey"}, lw:{m:91,t:"Turkey"} },
+    { date:"16 Jun 2026", group:"Group A", home:"Mexico", hs:0, away:"Czech Republic", as:0, yh:2, ya:1, rh:0, ra:0, oh:0, oa:0, ph:1, pa:0, ch:2, ca:2, foh:10, foa:10, poh:61, poa:39, hgh:0, hga:0, sgh:0, sga:0, shh:22, sha:4 },
+    { date:"16 Jun 2026", group:"Group A", home:"South Korea", hs:4, away:"South Africa", as:1, yh:4, ya:3, rh:0, ra:0, oh:0, oa:1, ph:0, pa:0, ch:7, ca:5, foh:9, foa:10, poh:60, poa:40, hgh:2, hga:0, sgh:1, sga:1, shh:17, sha:12, fg:{m:8,t:"South Africa"} },
+    { date:"16 Jun 2026", group:"Group B", home:"Bosnia-Herzegovina", hs:3, away:"Canada", as:2, yh:3, ya:1, rh:0, ra:0, oh:0, oa:0, ph:0, pa:0, ch:8, ca:6, foh:10, foa:9, poh:66, poa:34, hgh:3, hga:0, sgh:0, sga:0, shh:10, sha:9, fg:{m:57,t:"Canada"} },
+    { date:"16 Jun 2026", group:"Group B", home:"Switzerland", hs:3, away:"Qatar", as:4, yh:4, ya:0, rh:0, ra:0, oh:0, oa:0, ph:0, pa:0, ch:6, ca:7, foh:9, foa:14, poh:46, poa:54, hgh:0, hga:2, sgh:0, sga:0, shh:22, sha:7, fg:{m:41,t:"Qatar"} },
     { date:"15 Jun 2026", group:"Group J", home:"Argentina", hs:3, away:"Jordan", as:0, yh:1, ya:2, rh:0, ra:0, oh:0, oa:0, ph:0, pa:0, ch:7, ca:2, foh:9, foa:14, poh:62, poa:38, hgh:1, hga:0, sgh:1, sga:0, shh:16, sha:5, fg:{m:12,t:"Argentina"} },
     { date:"15 Jun 2026", group:"Group J", home:"Austria", hs:1, away:"Algeria", as:2, yh:2, ya:2, rh:0, ra:0, oh:0, oa:0, ph:0, pa:0, ch:4, ca:5, foh:12, foa:13, poh:48, poa:52, hgh:0, hga:1, sgh:0, sga:1, shh:12, sha:13, fg:{m:23,t:"Austria"}, cb:{t:"Algeria",d:1} },
     { date:"15 Jun 2026", group:"Group K", home:"Portugal", hs:2, away:"DR Congo", as:1, yh:1, ya:1, rh:0, ra:0, oh:0, oa:0, ph:0, pa:0, ch:6, ca:3, foh:10, foa:12, poh:58, poa:42, hgh:1, hga:0, sgh:0, sga:1, shh:15, sha:8, fg:{m:18,t:"Portugal"}, lw:{m:90,t:"Portugal"} },
@@ -1011,8 +1067,7 @@ document.querySelectorAll(".tab").forEach(t=>{
 const themeBtn = document.getElementById("themeBtn");
 function applyTheme(mode){
   document.documentElement.classList.toggle("light", mode==="light");
-  themeBtn.textContent = mode==="light" ? "☀️ Light" : "🌙 Dark";
-  themeBtn.setAttribute("aria-pressed", mode==="light");
+  themeBtn.setAttribute("aria-checked", mode==="light");
   try{ localStorage.setItem("wcSweepTheme", mode); }catch(e){}
   if(lbChart) makeChart();
 }
