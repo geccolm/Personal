@@ -113,6 +113,7 @@
   .bet h3{font-size:17px; font-weight:800; padding-right:74px; margin-bottom:3px; letter-spacing:.2px}
   .bet .bet-desc{font-size:13px; color:var(--muted); margin-bottom:14px; line-height:1.3}
   .bet .leadteam{font-family:"Archivo Black",sans-serif; font-size:21px; line-height:1.1}
+  .bet .leadteam.multi{font-size:15px; line-height:1.35}
   .bet .leadowner{font-size:14.5px; color:var(--muted); margin-top:5px; font-weight:600}
   .bet .leadowner b{color:var(--green); font-size:16.5px; font-weight:800}
   .bet .bet-game{font-size:11.5px; color:var(--muted); margin-top:8px; padding-right:70px; line-height:1.35}
@@ -581,8 +582,8 @@ function leader(key, dir){
     if(best===null || (dir==="max"&&a[key]>val) || (dir==="min"&&a[key]<val)){ best=t; val=a[key]; }
   });
   if(val===null||val===0) return null;
-  const tie = Object.values(teamAgg).filter(a=>a[key]===val).length;
-  return {team:best, value:val, tie};
+  const teams = Object.entries(teamAgg).filter(([t,a])=>a[key]===val).map(([t])=>t);
+  return {team:best, value:val, teams};
 }
 function heaviestDefeat(){
   let row=null, margin=0;
@@ -656,18 +657,25 @@ const COMPUTE = {
 document.getElementById("bets").innerHTML = DATA.sideBets.map(b=>{
   const auto = COMPUTE[b.name];
   const team = auto? auto.team : (b.leaderTeam||"TBC");
-  const own = auto? ownerOf(auto.team) : b.owner;
   const val = auto? auto.value : b.value;
-  const tie = (auto&&auto.tie>1) ? auto.tie : 0;
-  const teamLine = `${flagOf(team)}${team}${tie?` +${tie-1}`:''}`;
-  const ownerLine = tie ? `<b>Split ${tie} ways</b>` : (own?`<b>${own}</b>`:'awaiting results');
+  const tied = (auto&&auto.teams&&auto.teams.length>1) ? auto.teams : null;
+  let teamLine, ownerLine;
+  if(tied){
+    teamLine = tied.map(t=>`${flagOf(t)}${t}`).join(", ");
+    const owners = [...new Set(tied.map(t=>ownerOf(t)).filter(Boolean))];
+    ownerLine = owners.length? `Split between <b>${owners.join(", ")}</b>` : 'awaiting results';
+  } else {
+    teamLine = `${flagOf(team)}${team}`;
+    const own = auto? ownerOf(auto.team) : b.owner;
+    ownerLine = own?`<b>${own}</b>`:'awaiting results';
+  }
   const gameLine = (auto&&auto.game)? `<div class="bet-game">${auto.game}</div>` : '';
   return `
   <div class="bet">
     <span class="scope ${b.scope}">${b.scope==='group'?'Group stage':'Full tournament'}</span>
     <h3>${b.name}</h3>
     <div class="bet-desc">${b.desc||''}</div>
-    <div class="leadteam">${teamLine}</div>
+    <div class="leadteam${tied?' multi':''}">${teamLine}</div>
     <div class="leadowner">${ownerLine}</div>
     ${gameLine}
     ${val!==""&&val!=null?`<div class="val">${val}</div>`:''}
@@ -1043,10 +1051,10 @@ function renderLbRank(){
 }
 
 document.getElementById("lbShowAll").addEventListener("click",()=>{
-  if(lbChart){ lbChart.data.datasets.forEach(d=>d.hidden=false); lbChart.update(); }
+  if(lbChart) lbChart.data.datasets.forEach((d,i)=>lbChart.show(i));
 });
 document.getElementById("lbHideAll").addEventListener("click",()=>{
-  if(lbChart){ lbChart.data.datasets.forEach(d=>d.hidden=true); lbChart.update(); }
+  if(lbChart) lbChart.data.datasets.forEach((d,i)=>lbChart.hide(i));
 });
 
 document.querySelectorAll(".tab").forEach(t=>{
