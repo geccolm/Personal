@@ -114,7 +114,8 @@
   .bet .bet-desc{font-size:13px; color:var(--muted); margin-bottom:14px; line-height:1.3}
   .bet .leadteam{font-family:"Archivo Black",sans-serif; font-size:21px; line-height:1.1}
   .bet .leadowner{font-size:14.5px; color:var(--muted); margin-top:5px; font-weight:600}
-  .bet .leadowner b{color:var(--green)}
+  .bet .leadowner b{color:var(--green); font-size:16.5px; font-weight:800}
+  .bet .bet-game{font-size:11.5px; color:var(--muted); margin-top:8px; padding-right:70px; line-height:1.35}
   .bet .val{position:absolute; bottom:14px; right:16px; font-family:"Anton"; font-size:30px; color:var(--ink); opacity:.85}
   .matchday{margin-top:22px}
   .matchday:first-child{margin-top:0}
@@ -207,6 +208,8 @@
   .trk-num.gd-pos{color:var(--green)}
   .trk-num.gd-neg{color:var(--red)}
   .trk-empty{padding:36px; text-align:center; color:var(--muted)}
+  .trk-callout{margin:8px 2px 2px; font-size:13.5px; color:var(--muted); min-height:20px; transition:color .15s}
+  .trk-callout b{color:var(--green)}
   .lb-controls{display:flex; gap:8px; flex-wrap:wrap; margin:20px 0 14px; align-items:center}
   .lb-toggle{display:inline-flex; background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:3px}
   .lb-toggle button{background:transparent; border:none; color:var(--muted); font-family:"Anton"; letter-spacing:1px;
@@ -312,7 +315,6 @@
       <div class="lab">Total pot</div>
       <div class="big">&pound;200</div>
       <div class="sub">10 heads &middot; &pound;20 each</div>
-      <div class="who">Cash held by the organiser</div>
       <div class="potstrip" id="potstrip"></div>
     </div>
   </section>
@@ -332,7 +334,6 @@
   <div id="view-trk" class="view">
     <section class="sec" style="margin-top:30px">
       <div class="sec-h"><h2>Side-Bet Tracker</h2><div class="ln"></div><div class="tag">All 48 teams &middot; cumulative totals</div></div>
-      <div class="trk-summary" id="trkSummary"></div>
       <div class="trk-controls">
         <input class="trk-search" id="trkSearch" placeholder="Search team, owner or group...">
         <select class="trk-filter" id="trkFilter">
@@ -341,6 +342,7 @@
         <div class="trk-legend"><span><i></i> Side-bet leader</span></div>
       </div>
       <div class="scroll-hint">Swipe the table sideways to see all columns →</div>
+      <div class="trk-callout" id="trkCallout">Tap a column header to sort. Tap a side-bet column to see what it pays.</div>
       <div class="trk-wrap">
         <table class="trk-table" id="trkTable">
           <thead>
@@ -378,17 +380,17 @@
       <div class="sec-h"><h2>Leaderboard Over Time</h2><div class="ln"></div><div class="tag">&pound; won per punter &middot; by matchday</div></div>
       <div class="lb-controls">
         <div class="lb-toggle" id="lbToggle">
-          <button data-mode="money" class="active">Money</button>
-          <button data-mode="rank">Rank</button>
+          <button type="button" id="lbShowAll" class="active">Show all</button>
+          <button type="button" id="lbHideAll">Hide all</button>
         </div>
-        <div class="lb-meta" id="lbMeta">Countable bets charted &middot; &pound;140 of &pound;200 in play</div>
+        <div class="lb-meta" id="lbMeta">Tap a name below the chart to show/hide &middot; &pound;140 of &pound;200 charted</div>
       </div>
       <div class="lb-grid">
         <div class="lb-chart"><canvas id="lbChart"></canvas></div>
         <div class="lb-rank" id="lbRank"></div>
       </div>
       <div class="lb-note">
-        Each line is a punter. <b>Money view</b> shows cumulative &pound; they would win if the side bets were settled at that matchday. <b>Rank view</b> shows their position (1 = most money). Tap any line or point for a punter's breakdown, and tap a name in the legend below the chart to isolate it. The 14 running-total bets are charted: goals scored, goals conceded, yellows, reds, own goals, penalties conceded, corners, fouls, clean sheets, headed goals, substitute goals, average possession, shots faced, heaviest defeat. The 6 one-off awards (fastest goal, latest winner, comeback king, most shots per goal, lowest winning possession, biggest possession gap) are decided on the day and shown on the Side Bets tab.
+        Each line is a punter, showing cumulative &pound; they would win if the side bets were settled at that matchday. Tap any line or point for a punter's breakdown. Tap a name in the legend below the chart to show or hide that punter, or use Show all / Hide all above. Tied bets split the &pound;10 between the tied teams' owners. The 14 running-total bets are charted: goals scored, goals conceded, yellows, reds, own goals, penalties conceded, corners, fouls, clean sheets, headed goals, substitute goals, average possession, shots faced, heaviest defeat. The 6 one-off awards (fastest goal, latest winner, comeback king, most shots per goal, lowest winning possession, biggest possession gap) are decided on the day and shown on the Side Bets tab.
       </div>
     </section>
   </div>
@@ -406,7 +408,7 @@
    ============================================================ */
 const DATA = {
   lastUpdated: "15 Jun 2026",
-  pot: 160,
+  pot: 200,
   mainPrizes: [],
   sideBets: [
     { name:"Goal Machine",         desc:"Most goals scored",            scope:"full", leaderTeam:"TBC", owner:null, value:"" },
@@ -571,18 +573,23 @@ DATA.recentScores.forEach(s=>{
 });
 Object.values(teamAgg).forEach(a=>a.gd=a.gs-a.gc);
 
+function gameStr(s){ return `${flagOf(s.home)}${s.home} ${s.hs}-${s.as} ${flagOf(s.away)}${s.away}`; }
 function leader(key, dir){
   let best=null, val=null;
   Object.entries(teamAgg).forEach(([t,a])=>{
     if(a[key]==null) return;
     if(best===null || (dir==="max"&&a[key]>val) || (dir==="min"&&a[key]<val)){ best=t; val=a[key]; }
   });
-  return (val===null||val===0)? null : {team:best, value:val};
+  if(val===null||val===0) return null;
+  const tie = Object.values(teamAgg).filter(a=>a[key]===val).length;
+  return {team:best, value:val, tie};
 }
 function heaviestDefeat(){
-  let best=null, margin=0;
-  DATA.recentScores.forEach(s=>{ const m=Math.abs(s.hs-s.as); if(m>margin){ margin=m; best={team: s.hs<s.as?s.home:s.away, score:`${Math.max(s.hs,s.as)}-${Math.min(s.hs,s.as)}`}; } });
-  return best? {team:best.team, value:best.score} : null;
+  let row=null, margin=0;
+  DATA.recentScores.forEach(s=>{ const m=Math.abs(s.hs-s.as); if(m>margin){ margin=m; row=s; } });
+  if(!row) return null;
+  const loser = row.hs<row.as?row.home:row.away;
+  return {team:loser, value:`${Math.max(row.hs,row.as)}-${Math.min(row.hs,row.as)}`, game:gameStr(row)};
 }
 function avgPossLeader(){
   let best=null, val=0;
@@ -590,19 +597,19 @@ function avgPossLeader(){
   return best? {team:best, value:Math.round(val)+"%"} : null;
 }
 function fastestGoal(){
-  let best=null, m=99999;
-  DATA.recentScores.forEach(s=>{ if(s.fg && s.fg.m<m){ m=s.fg.m; best=s.fg.t; } });
-  return best? {team:best, value:m+"'"} : null;
+  let row=null, team=null, m=99999;
+  DATA.recentScores.forEach(s=>{ if(s.fg && s.fg.m<m){ m=s.fg.m; team=s.fg.t; row=s; } });
+  return row? {team:team, value:m+"'", game:gameStr(row)} : null;
 }
 function latestWinner(){
-  let best=null, m=-1;
-  DATA.recentScores.forEach(s=>{ if(s.lw && s.lw.m>m){ m=s.lw.m; best=s.lw.t; } });
-  return best? {team:best, value:m+"'"} : null;
+  let row=null, team=null, m=-1;
+  DATA.recentScores.forEach(s=>{ if(s.lw && s.lw.m>m){ m=s.lw.m; team=s.lw.t; row=s; } });
+  return row? {team:team, value:m+"'", game:gameStr(row)} : null;
 }
 function comebackKing(){
-  let best=null, d=0;
-  DATA.recentScores.forEach(s=>{ if(s.cb && s.cb.d>d){ d=s.cb.d; best=s.cb.t; } });
-  return best? {team:best, value:"from "+d+" down"} : null;
+  let row=null, team=null, d=0;
+  DATA.recentScores.forEach(s=>{ if(s.cb && s.cb.d>d){ d=s.cb.d; team=s.cb.t; row=s; } });
+  return row? {team:team, value:"from "+d+" down", game:gameStr(row)} : null;
 }
 function wastefulLeader(){
   let best=null, val=0;
@@ -610,17 +617,17 @@ function wastefulLeader(){
   return best? {team:best, value:(Math.round(val*10)/10)+" shots/goal"} : null;
 }
 function lowWinPoss(){
-  let best=null, val=101;
+  let row=null, team=null, val=101;
   DATA.recentScores.forEach(s=>{
-    if(s.hs>s.as && (s.poh||101)<val){ val=s.poh; best=s.home; }
-    else if(s.as>s.hs && (s.poa||101)<val){ val=s.poa; best=s.away; }
+    if(s.hs>s.as && (s.poh||101)<val){ val=s.poh; team=s.home; row=s; }
+    else if(s.as>s.hs && (s.poa||101)<val){ val=s.poa; team=s.away; row=s; }
   });
-  return best? {team:best, value:val+"% & won"} : null;
+  return row? {team:team, value:val+"% & won", game:gameStr(row)} : null;
 }
 function possGap(){
-  let best=null, val=0;
-  DATA.recentScores.forEach(s=>{ const g=Math.abs((s.poh||0)-(s.poa||0)); if(g>val){ val=g; best=(s.poh>=s.poa)?s.home:s.away; } });
-  return best? {team:best, value:val+" pts"} : null;
+  let row=null, team=null, val=0;
+  DATA.recentScores.forEach(s=>{ const g=Math.abs((s.poh||0)-(s.poa||0)); if(g>val){ val=g; team=(s.poh>=s.poa)?s.home:s.away; row=s; } });
+  return row? {team:team, value:val+" pts", game:gameStr(row)} : null;
 }
 
 const COMPUTE = {
@@ -651,13 +658,18 @@ document.getElementById("bets").innerHTML = DATA.sideBets.map(b=>{
   const team = auto? auto.team : (b.leaderTeam||"TBC");
   const own = auto? ownerOf(auto.team) : b.owner;
   const val = auto? auto.value : b.value;
+  const tie = (auto&&auto.tie>1) ? auto.tie : 0;
+  const teamLine = `${flagOf(team)}${team}${tie?` +${tie-1}`:''}`;
+  const ownerLine = tie ? `<b>Split ${tie} ways</b>` : (own?`<b>${own}</b>`:'awaiting results');
+  const gameLine = (auto&&auto.game)? `<div class="bet-game">${auto.game}</div>` : '';
   return `
   <div class="bet">
     <span class="scope ${b.scope}">${b.scope==='group'?'Group stage':'Full tournament'}</span>
     <h3>${b.name}</h3>
     <div class="bet-desc">${b.desc||''}</div>
-    <div class="leadteam">${flagOf(team)}${team}</div>
-    <div class="leadowner">${own?`<b>${own}</b>`:'awaiting results'}</div>
+    <div class="leadteam">${teamLine}</div>
+    <div class="leadowner">${ownerLine}</div>
+    ${gameLine}
     ${val!==""&&val!=null?`<div class="val">${val}</div>`:''}
   </div>`;
 }).join("");
@@ -806,37 +818,19 @@ function renderTracker(){
   });
 }
 
-function renderSummary(){
-  const bets = [
-    {key:"yc", name:"Card Sharks"},
-    {key:"rc", name:"Seeing Red"},
-    {key:"og", name:"Wrong Net"},
-    {key:"pen", name:"Spot-Kick Magnet"}
-  ];
-  document.getElementById("trkSummary").innerHTML = bets.map(b=>{
-    const L = LEADERS[b.key];
-    if(!L || L.max===0) return `<div class="trk-card"><div class="lbl">${b.name}</div><div class="v">TBC</div><div class="o">no data yet</div></div>`;
-    const team = [...L.teams][0];
-    const own = ownerOf(team);
-    return `<div class="trk-card">
-      <div class="lbl">${b.name}</div>
-      <div class="v">${L.max} · ${team}</div>
-      <div class="o">${own?own:'unowned'}</div>
-    </div>`;
-  }).join("");
-}
-
+const BETMAP={gs:["Goal Machine","most goals scored"],gc:["The Sieve","most goals conceded"],yc:["Card Sharks","most yellow cards"],rc:["Seeing Red","most red cards"],og:["Wrong Net","most own goals"],pen:["Spot-Kick Magnet","most penalties conceded"],co:["Corner Shop","most corners won"],fo:["The Hatchet Men","most fouls committed"],cs:["The Wall","most clean sheets"],hg:["Aerial Threat","most headed goals"],sg:["Super Sub","most goals by substitutes"],sfd:["Shooting Gallery","most shots faced"],pos:["Tiki-Taka","highest average possession"]};
 document.querySelectorAll("#trkTable thead th").forEach(th=>{
   th.addEventListener("click",()=>{
     const k = th.dataset.sort;
     if(sortKey===k) sortDir=-sortDir;
     else { sortKey=k; sortDir = th.dataset.numeric? -1 : 1; }
     renderTracker();
+    const info=BETMAP[k]; const co=document.getElementById("trkCallout");
+    if(co) co.innerHTML = info? `Sorted by <b>${info[0]}</b> — ${info[1]} (£10 side bet)` : `Sorted by <b>${th.textContent.trim()}</b> — not a side bet`;
   });
 });
 document.getElementById("trkSearch").addEventListener("input", renderTracker);
 grpSel.addEventListener("change", renderTracker);
-renderSummary();
 renderTracker();
 
 /* ============================================================
@@ -874,6 +868,10 @@ function leaderTeam(A,k){
   Object.entries(A).forEach(([t,a])=>{ if(a[k]>val){ best=t; val=a[k]; } });
   return val>0? best : null;
 }
+function leaderTeamsAll(A,k){
+  let val=0; Object.values(A).forEach(a=>{ if(a[k]>val) val=a[k]; });
+  return val>0? Object.entries(A).filter(([t,a])=>a[k]===val).map(([t])=>t) : [];
+}
 function avgPossSlice(A){
   let best=null,val=0;
   Object.entries(A).forEach(([t,a])=>{ if(a.played>0){ const av=a.posSum/a.played; if(av>val){ val=av; best=t; } } });
@@ -891,28 +889,29 @@ const BETS_AT_CUT = {}; PUNTERS.forEach(p=>BETS_AT_CUT[p]=[]);
 
 DATES.forEach(d=>{
   const {agg, slice} = aggToCutoff(d, DATES);
+  const wrap=(t)=>t?[t]:[];
   const leaders = {
-    "Goal Machine":         leaderTeam(agg,"gs"),
-    "The Sieve":       leaderTeam(agg,"gc"),
-    "Card Sharks":         leaderTeam(agg,"yc"),
-    "Seeing Red":            leaderTeam(agg,"rc"),
-    "Wrong Net":            leaderTeam(agg,"og"),
-    "Spot-Kick Magnet":   leaderTeam(agg,"pen"),
-    "Corner Shop":              leaderTeam(agg,"co"),
-    "The Hatchet Men":                leaderTeam(agg,"fo"),
-    "The Wall":         leaderTeam(agg,"cs"),
-    "Aerial Threat":         leaderTeam(agg,"hg"),
-    "Super Sub":     leaderTeam(agg,"sg"),
-    "Tiki-Taka":avgPossSlice(agg),
-    "Shooting Gallery":          leaderTeam(agg,"sfd"),
-    "The Hammering":           heaviestDefeatSlice(slice)
+    "Goal Machine":         leaderTeamsAll(agg,"gs"),
+    "The Sieve":            leaderTeamsAll(agg,"gc"),
+    "Card Sharks":          leaderTeamsAll(agg,"yc"),
+    "Seeing Red":           leaderTeamsAll(agg,"rc"),
+    "Wrong Net":            leaderTeamsAll(agg,"og"),
+    "Spot-Kick Magnet":     leaderTeamsAll(agg,"pen"),
+    "Corner Shop":          leaderTeamsAll(agg,"co"),
+    "The Hatchet Men":      leaderTeamsAll(agg,"fo"),
+    "The Wall":             leaderTeamsAll(agg,"cs"),
+    "Aerial Threat":        leaderTeamsAll(agg,"hg"),
+    "Super Sub":            leaderTeamsAll(agg,"sg"),
+    "Tiki-Taka":            wrap(avgPossSlice(agg)),
+    "Shooting Gallery":     leaderTeamsAll(agg,"sfd"),
+    "The Hammering":        wrap(heaviestDefeatSlice(slice))
   };
   const punterMoney = {}; const punterBets = {};
   PUNTERS.forEach(p=>{ punterMoney[p]=0; punterBets[p]=[]; });
-  Object.entries(leaders).forEach(([bet,team])=>{
-    if(!team) return;
-    const own = ownerOf(team);
-    if(own){ punterMoney[own]+=BET_VAL; punterBets[own].push(bet); }
+  Object.entries(leaders).forEach(([bet,teams])=>{
+    if(!teams||!teams.length) return;
+    const share = BET_VAL/teams.length;
+    teams.forEach(tm=>{ const own=ownerOf(tm); if(own){ punterMoney[own]+=share; if(!punterBets[own].includes(bet)) punterBets[own].push(bet); } });
   });
   PUNTERS.forEach(p=>{ SERIES[p].push(punterMoney[p]); BETS_AT_CUT[p].push(punterBets[p]); });
 });
@@ -997,11 +996,8 @@ function makeChart(){
               const p = ctx.dataset.label;
               const i = ctx.dataIndex;
               const bets = BETS_AT_CUT[p][i];
-              if(lbMode==="money"){
-                return `${p}: £${ctx.parsed.y}` + (bets.length? ` · ${bets.length} bet${bets.length>1?"s":""}` : "");
-              } else {
-                return `${p}: rank ${ctx.parsed.y} · £${SERIES[p][i]}`;
-              }
+              const y=ctx.parsed.y; const ym=(y%1?+y.toFixed(1):y);
+              return `${p}: £${ym}` + (bets.length? ` · ${bets.length} bet${bets.length>1?"s":""}` : "");
             },
             afterLabel:(ctx)=>{
               const p = ctx.dataset.label;
@@ -1041,18 +1037,16 @@ function renderLbRank(){
           <div class="nm"><span class="swatch" style="background:${PALETTE[r.p]}"></span>${r.p}</div>
           <div class="bets">${r.bets? r.bets+" bet"+(r.bets>1?"s":"")+" leading" : "no bets · £0"}</div>
         </div>
-        <div class="v">£${r.v}</div>
+        <div class="v">£${(r.v%1?+r.v.toFixed(1):r.v)}</div>
       </div>`;
     }).join("")}`;
 }
 
-document.querySelectorAll("#lbToggle button").forEach(b=>{
-  b.addEventListener("click",()=>{
-    document.querySelectorAll("#lbToggle button").forEach(x=>x.classList.remove("active"));
-    b.classList.add("active");
-    lbMode = b.dataset.mode;
-    makeChart();
-  });
+document.getElementById("lbShowAll").addEventListener("click",()=>{
+  if(lbChart){ lbChart.data.datasets.forEach(d=>d.hidden=false); lbChart.update(); }
+});
+document.getElementById("lbHideAll").addEventListener("click",()=>{
+  if(lbChart){ lbChart.data.datasets.forEach(d=>d.hidden=true); lbChart.update(); }
 });
 
 document.querySelectorAll(".tab").forEach(t=>{
