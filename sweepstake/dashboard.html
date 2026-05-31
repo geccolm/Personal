@@ -342,13 +342,20 @@
               <th class="numeric" data-sort="gs" data-numeric="1">GF</th>
               <th class="numeric" data-sort="gc" data-numeric="1">GA</th>
               <th class="numeric" data-sort="gd" data-numeric="1">GD</th>
+              <th class="numeric" data-sort="co" data-numeric="1">CK</th>
+              <th class="numeric" data-sort="fo" data-numeric="1">FL</th>
+              <th class="numeric" data-sort="cs" data-numeric="1">CS</th>
+              <th class="numeric" data-sort="hg" data-numeric="1">HG</th>
+              <th class="numeric" data-sort="sg" data-numeric="1">SG</th>
+              <th class="numeric" data-sort="sfd" data-numeric="1">SHF</th>
+              <th class="numeric" data-sort="pos" data-numeric="1">POS</th>
             </tr>
           </thead>
           <tbody id="trkBody"></tbody>
         </table>
       </div>
       <div style="margin-top:14px; font-size:12px; color:var(--muted)">
-        Star marks the current side-bet leader in that column. Home-page Side Bets summary is fed from this table.
+        Star marks the current side-bet leader in that column. Key: P played, YC yellows, RC reds, OG own goals, PEN penalties conceded, GF goals for, GA goals against, GD goal difference, CK corners, FL fouls, CS clean sheets, HG headed goals, SG sub goals, SHF shots faced, POS avg possession.
       </div>
     </section>
   </div>
@@ -463,6 +470,19 @@ ALLOC.forEach(([nm,teams])=>teams.forEach(([t])=>{ TEAM_OWNER[t.toLowerCase()] =
 TEAM_OWNER["usa"] = TEAM_OWNER["united states"];
 function ownerOf(team){ return TEAM_OWNER[(team||"").toLowerCase()] || null; }
 
+/* team -> flag emoji */
+const FLAG = {
+  "France":"🇫🇷","Spain":"🇪🇸","Argentina":"🇦🇷","England":"🏴󠁧󠁢󠁥󠁮󠁧󠁿","Portugal":"🇵🇹","Brazil":"🇧🇷",
+  "Netherlands":"🇳🇱","Morocco":"🇲🇦","Belgium":"🇧🇪","Germany":"🇩🇪","Croatia":"🇭🇷","Colombia":"🇨🇴",
+  "Senegal":"🇸🇳","Mexico":"🇲🇽","United States":"🇺🇸","Uruguay":"🇺🇾","Japan":"🇯🇵","Switzerland":"🇨🇭",
+  "Iran":"🇮🇷","Turkey":"🇹🇷","Ecuador":"🇪🇨","Austria":"🇦🇹","South Korea":"🇰🇷","Australia":"🇦🇺",
+  "Algeria":"🇩🇿","Egypt":"🇪🇬","Canada":"🇨🇦","Norway":"🇳🇴","Panama":"🇵🇦","Ivory Coast":"🇨🇮",
+  "Sweden":"🇸🇪","Paraguay":"🇵🇾","Czech Republic":"🇨🇿","Scotland":"🏴󠁧󠁢󠁳󠁣󠁴󠁿","Tunisia":"🇹🇳","DR Congo":"🇨🇩",
+  "Uzbekistan":"🇺🇿","Qatar":"🇶🇦","Iraq":"🇮🇶","South Africa":"🇿🇦","Saudi Arabia":"🇸🇦","Jordan":"🇯🇴",
+  "Bosnia-Herzegovina":"🇧🇦","Cape Verde":"🇨🇻","Ghana":"🇬🇭","Curacao":"🇨🇼","Haiti":"🇭🇹","New Zealand":"🇳🇿"
+};
+function flagOf(team){ const f=FLAG[team]; return f? f+" " : ""; }
+
 /* render */
 document.getElementById("potChip").textContent = "POT £"+DATA.pot;
 document.getElementById("updChip").textContent = "UPDATED · "+DATA.lastUpdated;
@@ -575,7 +595,7 @@ document.getElementById("bets").innerHTML = DATA.sideBets.map(b=>{
     <span class="scope ${b.scope}">${b.scope==='group'?'Group stage':'Full tournament'}</span>
     <h3>${b.name}</h3>
     <div class="bet-desc">${b.desc||''}</div>
-    <div class="leadteam">${team}</div>
+    <div class="leadteam">${flagOf(team)}${team}</div>
     <div class="leadowner">${own?`<b>${own}</b>`:'awaiting results'}</div>
     ${val!==""&&val!=null?`<div class="val">${val}</div>`:''}
   </div>`;
@@ -617,9 +637,9 @@ if(DATA.recentScores.length){
           <div class="score">
             ${tag}
             <div class="gp">${s.group||''}</div>
-            <div class="home ${hWin?'winner':drw?'draw':''}">${s.home}</div>
+            <div class="home ${hWin?'winner':drw?'draw':''}">${flagOf(s.home)}${s.home}</div>
             <div class="sc"><span class="${hWin?'winner':drw?'draw':''}">${s.hs}</span><span class="d">–</span><span class="${aWin?'winner':drw?'draw':''}">${s.as}</span></div>
-            <div class="away ${aWin?'winner':drw?'draw':''}">${s.away}</div>
+            <div class="away ${aWin?'winner':drw?'draw':''}">${flagOf(s.away)}${s.away}</div>
             ${evStrip}
           </div>`;
         }).join("")}
@@ -644,7 +664,7 @@ document.getElementById("punters").innerHTML = ALLOC.map(([name,teams])=>`
     ${teams.map(([t,g,r])=>`
       <div class="team">
         <span class="grp">${g}</span>
-        <span class="nm">${t}</span>
+        <span class="nm">${flagOf(t)}${t}</span>
         <span class="rk ${r<=8?'elite':r>=65?'minnow':''}">#${r}</span>
       </div>`).join("")}
   </div>`).join("");
@@ -660,12 +680,12 @@ document.querySelectorAll(".tab").forEach(t=>{
 
 const ALL_TEAMS = [];
 ALLOC.forEach(([owner,teams])=>teams.forEach(([t,g,r])=>{
-  const a = teamAgg[t] || {yc:0,rc:0,og:0,pen:0,gs:0,gc:0,played:0,gd:0};
-  ALL_TEAMS.push({team:t, group:g, rank:r, owner, played:a.played, yc:a.yc, rc:a.rc, og:a.og, pen:a.pen, gs:a.gs, gc:a.gc, gd:a.gd});
+  const a = teamAgg[t] || {yc:0,rc:0,og:0,pen:0,gs:0,gc:0,played:0,gd:0,co:0,fo:0,hg:0,sg:0,posSum:0,cs:0,sf:0,sfd:0};
+  ALL_TEAMS.push({team:t, group:g, rank:r, owner, played:a.played, yc:a.yc, rc:a.rc, og:a.og, pen:a.pen, gs:a.gs, gc:a.gc, gd:a.gd, co:a.co, fo:a.fo, cs:a.cs, hg:a.hg, sg:a.sg, sfd:a.sfd, pos:(a.played?Math.round(a.posSum/a.played):0)});
 }));
 
 const LEADERS = {};
-["yc","rc","og","pen","gs","gc"].forEach(k=>{
+["yc","rc","og","pen","gs","gc","co","fo","cs","hg","sg","sfd","pos"].forEach(k=>{
   let max=0, set=new Set();
   ALL_TEAMS.forEach(t=>{ if(t[k]>max){ max=t[k]; set=new Set([t.team]); } else if(t[k]===max && max>0) set.add(t.team); });
   LEADERS[k] = {max, teams:set};
@@ -692,7 +712,7 @@ function renderTracker(){
     return sortDir*((av||0)-(bv||0));
   });
   const body = document.getElementById("trkBody");
-  if(!rows.length){ body.innerHTML=`<tr><td colspan="11" class="trk-empty">No teams match your filters.</td></tr>`; return; }
+  if(!rows.length){ body.innerHTML=`<tr><td colspan="18" class="trk-empty">No teams match your filters.</td></tr>`; return; }
   body.innerHTML = rows.map(t=>{
     const cell=(k,v)=>{
       const lead = LEADERS[k] && LEADERS[k].teams.has(t.team) && LEADERS[k].max>0;
@@ -700,7 +720,7 @@ function renderTracker(){
       return `<td class="trk-num ${lead?'lead':''} ${z}">${v||0}</td>`;
     };
     return `<tr>
-      <td><span class="trk-team">${t.team}</span></td>
+      <td><span class="trk-team">${flagOf(t.team)}${t.team}</span></td>
       <td><span class="trk-group">${t.group}</span></td>
       <td><span class="trk-owner ${t.owner?'':'none'}">${t.owner||'—'}</span></td>
       <td class="trk-num ${!t.played?'zero':''}">${t.played||0}</td>
@@ -711,6 +731,13 @@ function renderTracker(){
       ${cell("gs",t.gs)}
       ${cell("gc",t.gc)}
       <td class="trk-num ${gdClass(t.gd)} ${!t.gd?'zero':''}">${t.gd>0?'+':''}${t.gd||0}</td>
+      ${cell("co",t.co)}
+      ${cell("fo",t.fo)}
+      ${cell("cs",t.cs)}
+      ${cell("hg",t.hg)}
+      ${cell("sg",t.sg)}
+      ${cell("sfd",t.sfd)}
+      <td class="trk-num ${LEADERS.pos&&LEADERS.pos.teams.has(t.team)&&LEADERS.pos.max>0?'lead':''} ${!t.pos?'zero':''}">${t.pos?t.pos+'%':0}</td>
     </tr>`;
   }).join("");
   document.querySelectorAll("#trkTable thead th").forEach(th=>{
